@@ -4,9 +4,9 @@
 **Distribution goal:** Google Play Store  
 **Product direction:** Android-first hybrid  
 **Primary compatibility device:** OnePlus 10T 5G, Android 15  
-**Documentation baseline:** 25 November 2026  
-**Documentation version:** 1.1  
-**Project status:** Android foundation created; product implementation not yet complete
+**Documentation baseline:** 26 November 2026  
+**Documentation version:** 1.2  
+**Project status:** Android UI, Room persistence foundation and first audio-import flow implemented; playback and recording feasibility remain outstanding.
 
 ## Product statement
 
@@ -42,7 +42,6 @@ A source-of-truth document does not turn an unverified assumption into a fact. E
 | [docs/design/design-system.md](docs/design/design-system.md) | Initial design tokens and foundations |
 | [docs/design/component-library.md](docs/design/component-library.md) | Reusable component inventory and behavior |
 | [docs/design/screen-specifications.md](docs/design/screen-specifications.md) | Screen requirements and acceptance criteria |
-| [docs/design/interaction-patterns.md](docs/design/interaction-patterns.md) | Cross-screen interaction and state patterns |
 
 ## Critical product constraint
 
@@ -62,9 +61,8 @@ No Accessibility Service misuse, hidden capture, root-only workaround, privilege
 
 - Android-first native application: Kotlin, Jetpack Compose, Material 3.
 - Android architecture: MVVM with Clean Architecture boundaries.
-- Local persistence: Room (planned; not yet integrated).
-- Local audio: app-private storage; encryption design to be validated.
-- Deferred work: WorkManager for eligible backup/transcription jobs, not continuous covert capture.
+- Local persistence: Room.
+- Local audio: app-private storage; encryption design remains to be validated.
 - Backend: Spring Boot modular monolith, Java.
 - Cloud metadata: PostgreSQL.
 - Audio backup: private object storage; client-side encryption before upload is a requirement.
@@ -75,27 +73,33 @@ No Accessibility Service misuse, hidden capture, root-only workaround, privilege
 
 ## Current implementation status
 
-Verified from the user's Android Studio screenshots and supplied build files:
-- Git repository opened in Android Studio.
-- `android/` project directory exists inside the repository working tree.
-- Kotlin/Compose Android project generated.
-- Gradle sync/build completed and the starter app launched in an API 37 emulator.
-- Initial package folders were created for core design system, data, domain and features.
-- CV Design System 1.0 foundations are implemented in the Android app: semantic color palette, dark/light Material 3 schemes, typography, shapes, reusable buttons, card, recording badge and empty state.
-- `CVDesignSystemPreview` is wired into `MainActivity` and was launched successfully in the API 37 emulator; the user supplied a screenshot showing the dark preview.
-- Actual CallVault Home screen implemented in `feature/home/HomeScreen.kt` and launched from `MainActivity`.
-- Five-destination bottom navigation is implemented using Compose state; Library, Insights, Backup and Settings currently show placeholder destinations.
-- Home import and compatibility actions currently show explanatory dialogs; Android file picker and capability assessment are not yet connected.
-- The user supplied an API 37 emulator screenshot confirming the Home layout and five-tab navigation render.
-- Functional audio import, local library, recording and playback remain unimplemented.
-- OnePlus 10T physical-device testing is pending.
+Verified from user-provided project files, successful build reports and emulator screenshots:
+- Kotlin/Compose project builds and launches on Medium Phone API 37.0 emulator.
+- CV Design System foundation and reusable components are implemented.
+- Home screen and five-destination bottom navigation are implemented; Library, Insights, Backup and Settings remain placeholders.
+- Room database foundation is integrated: recording entity, DAO, database, mapper, domain model, repository interface and implementation.
+- KSP/Room build succeeds in the user's environment with `android.disallowKotlinSourceSets=false` in `gradle.properties`; this compatibility workaround should be revisited before toolchain upgrades.
+- Android Storage Access Framework picker is connected to Home's Import Audio action.
+- `AudioImportManager` copies selected MP3, M4A or WAV files into app-private `filesDir/recordings`, extracts duration metadata and returns an `IMPORTED` recording model.
+- Imported recording metadata is saved through the Room repository and observed on Home.
+- User successfully imported `sample-3s`; screenshot showed 1 audio item, 00:03 total duration and a 51 KB imported item.
+- Import runs on `Dispatchers.IO`; cleanup is attempted if repository insertion fails.
+- Recording compatibility UI remains informational and correctly does not claim call-audio capture.
 
-See `memory.md` for the detailed verified baseline and outstanding work.
+Not yet verified:
+- Persistence after force-stop/restart (the user has not yet reported this test).
+- Playback, search, sort, rename, delete UI and Library destination.
+- OnePlus 10T physical-device behavior.
+- Automated unit/instrumentation tests and clean CI build.
+- Permitted SIM/VoIP call-audio capture.
+- Backend, AI processing, encrypted backup and web companion.
 
-### Current delivery phase (26 November 2026)
-- **Phase 1 — Android foundation and first UI: IN PROGRESS.**
-- Design-system foundation and reusable component preview: implemented and emulator-verified by user screenshot.
-- Actual Home screen, five-destination navigation, Room foundation, test baseline and OnePlus 10T verification: pending.
+## Current delivery phase (26 November 2026)
+
+- **Phase 1 — Android foundation and first UI: IN PROGRESS.** Design system, Home, navigation shell, Room foundation and first import flow are implemented; test baseline and physical-device verification remain.
+- **Phase 2 — Audio import, library and playback: IN PROGRESS.** Basic SAF import and Room metadata insertion are demonstrated on API 37 emulator. Library management and playback are not implemented.
+
+See `memory.md` and `phases.md` for evidence and outstanding acceptance checks.
 
 ## How to work with this repository
 
@@ -108,41 +112,11 @@ See `memory.md` for the detailed verified baseline and outstanding work.
 7. Mark assumptions and open decisions explicitly.
 8. Never mark a feature complete without its acceptance checks passing.
 
-## Documentation change policy
+## Documentation governance — v1.2 (26 November 2026)
 
 - Preserve user-approved scope unless the user approves a change.
 - Record decisions with date, status, rationale and affected documents.
 - Keep proposed backend schema separate from implemented database migrations.
 - Keep visual inspiration separate from copied assets or protected layouts.
 - Record actual build output and device tests; do not claim tests that were not run.
-
-
----
-
-
-## Documentation governance — v1.1 (25 November 2026)
-
-### Verified project baseline
-- Repository: `HarshVDubey/CallVault`, default branch `main`.
-- Android project lives under `android/` inside this repository.
-- Current Android build is a single Gradle module: `:app`.
-- User-provided configuration: Gradle 9.6.0; AGP 9.5.3; Kotlin 2.2.10; Compose BOM 2026.02.01; compileSdk 37; targetSdk 37; minSdk 26; Java source/target compatibility 11; namespace/applicationId `dev.callvault.app`.
-- User showed successful initial Gradle sync/build and starter-app launch on the Medium Phone API 37.0 emulator.
-- OnePlus 10T 5G / Android 15 remains the primary physical-device target; it has not yet been tested.
-- Package folders exist under the app source tree, but folder creation is not feature implementation.
-
-### Design decisions
-Premium dark visual direction, violet accent, and five-item bottom navigation are user-approved. The primary destinations are Home, Library, Insights, Backup and Settings. Individual color values and dimensions are proposed tokens pending emulator and physical-device validation.
-
-### Hallucination-prevention protocol
-For every implementation or status claim:
-1. Cite the exact source document, code path, test or observed device result.
-2. Mark it Confirmed, Proposed, Unverified or Blocked.
-3. Do not infer implementation from a folder, UI mockup, documentation entry or generated sample.
-4. Do not call a feature complete until its acceptance criteria and tests pass.
-5. Keep the implementation status in `memory.md` current.
-6. If a document is unavailable or a fact is not established, say so instead of filling the gap.
-
-### v1.1 change summary
-Reconciles the observed Android project baseline, package-based single-module architecture, Mobbin research supplied by the user, approved visual direction, Home-first implementation milestone, and explicit documentation/implementation status boundaries.
-
+- A successful import screenshot proves the demonstrated flow on the emulator, not restart durability, playback, physical-device compatibility or call recording.
