@@ -1,7 +1,7 @@
 # CallVault — Screen Specifications
 
 **Version:** 1.0  
-**Status:** Product/design baseline for implementation; screen code not yet implemented.
+**Status:** Home screen initial UI implemented and visually checked on API 37 emulator; other screens remain specification-only.
 
 ## 1. Shared screen rules
 
@@ -50,6 +50,18 @@ Summarize the user's local library and provide entry points to common tasks.
 - Import action opens system picker when implemented.
 - Counts/storage reflect actual local data, or are clearly marked as development fixture.
 - No fake recording indicator or fake playback state.
+
+### Home implementation status — 26 November 2026
+
+Implemented in `android/app/src/main/java/dev/callvault/app/feature/home/HomeScreen.kt`:
+- CallVault header and supporting tagline.
+- Library overview with intentionally unavailable values (`—`) rather than fabricated statistics.
+- Import Audio and Recording Compatibility actions that currently open explanatory dialogs.
+- Recent Recordings honest empty state.
+- Privacy-first information card.
+- Five-destination bottom navigation shell in `MainActivity.kt`.
+
+The user supplied an emulator screenshot confirming the Home layout and bottom navigation render on Medium Phone API 37.0. Library, Insights, Backup and Settings are placeholder destinations. The import picker, local data, recording compatibility assessment and functional library are not connected yet. Temporary text glyphs are used for navigation icons.
 
 ## 3. Library
 
