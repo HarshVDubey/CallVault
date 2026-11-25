@@ -1,22 +1,23 @@
 # CallVault — Backend Schema and API Data Model
 
-**Version:** 0.1  
+**Version:** 1.0  
 **Database:** PostgreSQL  
 **Backend:** Spring Boot modular monolith  
-**Status:** Proposed schema; validate against selected authentication, object storage and encryption design before migration.
+**Status:** Proposed logical model and DDL; not implemented or migration-tested
 
 ## 1. Schema principles
 
 - Store metadata and job state in PostgreSQL.
 - Store encrypted audio objects in private object storage, never as large database blobs.
 - Every user-owned record has an owner identifier.
-- Enforce ownership in backend authorization checks, not only by filtering in the UI.
+- Enforce ownership in backend authorization checks, not only UI filters.
 - Use UUID primary keys.
 - Use UTC timestamps (`TIMESTAMPTZ`).
-- Store only minimum necessary personal data.
+- Store minimum necessary personal data.
 - Do not store plaintext audio or full transcripts in audit logs.
 - Audio uploaded for backup must be client-side encrypted.
-- The schema must distinguish a recording from an imported file.
+- Distinguish recordings from imported files.
+- The schema is a proposal, not a production migration.
 
 ## 2. Entity relationships
 
@@ -31,88 +32,17 @@ erDiagram
   USERS ||--o{ PROCESSING_JOBS : requests
   USERS ||--o{ AUDIT_EVENTS : generates
   USERS ||--o{ BACKUP_OBJECTS : owns
-
-  USERS {
-    uuid id PK
-    text email
-    text display_name
-    timestamptz created_at
-    timestamptz updated_at
-    timestamptz deleted_at
-  }
-  DEVICES {
-    uuid id PK
-    uuid user_id FK
-    text platform
-    text app_version
-    text device_label
-    timestamptz last_seen_at
-  }
-  RECORDINGS {
-    uuid id PK
-    uuid user_id FK
-    text title
-    text source_type
-    text status
-    bigint duration_ms
-    bigint size_bytes
-    text mime_type
-    text local_reference
-    timestamptz captured_at
-    timestamptz created_at
-    timestamptz deleted_at
-  }
-  TRANSCRIPTS {
-    uuid id PK
-    uuid recording_id FK
-    text language
-    text transcript_text
-    jsonb segments
-    text status
-    timestamptz created_at
-  }
-  SUMMARIES {
-    uuid id PK
-    uuid recording_id FK
-    text overview
-    jsonb key_points
-    jsonb decisions
-    jsonb action_items
-    text model_label
-    timestamptz created_at
-  }
-  PROCESSING_JOBS {
-    uuid id PK
-    uuid user_id FK
-    uuid recording_id FK
-    text job_type
-    text status
-    text provider
-    text provider_job_id
-    text error_code
-    timestamptz created_at
-    timestamptz completed_at
-  }
-  BACKUP_OBJECTS {
-    uuid id PK
-    uuid user_id FK
-    uuid recording_id FK
-    text object_key
-    text encryption_version
-    text wrapped_key_reference
-    text checksum_sha256
-    bigint ciphertext_size
-    text status
-    timestamptz created_at
-  }
-  AUDIT_EVENTS {
-    uuid id PK
-    uuid user_id FK
-    text event_type
-    jsonb safe_metadata
-    timestamptz created_at
-  }
 ```
+
+### Core entities
+- `users`: cloud identity/profile.
+- `devices`: registered client devices.
+- `recordings`: metadata for recorded or imported audio.
+- `transcripts`: transcript text and optional timestamped segments.
+- `summaries`: generated overview, key points, decisions and action items.
+- `processing_jobs`: transcription/summary processing lifecycle.
+- `backup_objects`: encrypted object metadata and backup state.
+- `audit_events`: safe security/action metadata.
 
 ## 3. PostgreSQL DDL proposal
 
@@ -246,16 +176,18 @@ CREATE INDEX idx_audit_user_created
 
 ## 4. Schema notes and required refinements
 
-1. The DDL is a starting proposal, not a production migration.
-2. Add row-level security only if it fits the selected database access model; backend ownership checks remain mandatory.
-3. Consider a separate `recording_tags` and `tags` model when tags enter MVP scope.
-4. Consider a `backup_manifests` table for versioned backup sets and restore state.
-5. Avoid storing raw encryption keys in `wrapped_key_reference`; it must be a reference or opaque wrapped-key envelope designed by the security model.
-6. Add retention and deletion workflows for external AI providers.
-7. Add tenant/user quotas and rate-limit records if required.
-8. Ensure deleting a recording removes or schedules deletion of object storage data and derived transcripts/summaries.
-9. Define whether transcript text is encrypted at rest and whether server-side search is allowed. For stronger privacy, consider client-side encrypted transcript storage, accepting reduced server search capability.
-10. Do not store phone numbers, contact names or participant identities unless a clear feature requirement and privacy justification exist.
+1. DDL is a starting proposal, not a production migration.
+2. Backend ownership checks are mandatory; row-level security is an additional option to evaluate.
+3. Add `tags` and `recording_tags` when tags enter MVP scope.
+4. Consider `backup_manifests` for versioned backup sets and restore state.
+5. `wrapped_key_reference` must be an opaque reference or wrapped-key envelope; never a plaintext raw key.
+6. Add retention/deletion workflows for external AI providers.
+7. Consider quotas and rate-limit records as required.
+8. Deleting a recording must schedule deletion of object storage data and derived transcripts/summaries.
+9. Decide transcript-at-rest encryption and whether server-side search is permitted. Client-side encrypted transcript storage improves privacy but limits server-side search.
+10. Do not store phone numbers, contact names or participant identities without a clear feature requirement and privacy justification.
+11. Clarify whether imported and recorded items share the same table and how source verification is represented.
+12. Add explicit foreign-key ownership constraints/authorization tests to prevent cross-user data access.
 
 ## 5. Suggested API contract
 
@@ -266,9 +198,9 @@ Base path: `/api/v1`
 - `DELETE /me` — request account deletion.
 
 ### Recordings
-- `GET /recordings` — paginated recording metadata.
-- `POST /recordings` — register synchronized recording metadata.
-- `GET /recordings/{recordingId}` — recording metadata.
+- `GET /recordings` — paginated metadata.
+- `POST /recordings` — register synchronized metadata.
+- `GET /recordings/{recordingId}` — metadata.
 - `PATCH /recordings/{recordingId}` — update title/tags/metadata.
 - `DELETE /recordings/{recordingId}` — delete recording and related data.
 
@@ -281,7 +213,7 @@ Base path: `/api/v1`
 
 ### Backup
 - `POST /recordings/{recordingId}/backup-upload` — request authorized upload.
-- `POST /recordings/{recordingId}/backup-complete` — confirm upload and checksum.
+- `POST /recordings/{recordingId}/backup-complete` — confirm upload/checksum.
 - `GET /backups` — list backup objects/status.
 - `POST /backups/{backupId}/restore-access` — request short-lived download authorization.
 - `DELETE /backups/{backupId}` — delete cloud backup.
@@ -289,7 +221,7 @@ Base path: `/api/v1`
 ### API rules
 - Every endpoint checks authenticated user ownership.
 - Use pagination.
-- Use idempotency keys for job and upload creation.
+- Use idempotency keys for job/upload creation.
 - Return consistent error objects.
 - Never return permanent public object-storage URLs.
 - Use short-lived upload/download authorization.
@@ -313,5 +245,5 @@ Do not include transcript/audio content, credentials or internal stack traces in
 - **Local only:** audio and metadata remain on Android.
 - **AI requested:** audio is transmitted only after user confirmation; transcript/summary lifecycle is linked to source recording.
 - **Backup requested:** client encrypts audio before upload.
-- **Delete:** local and cloud copies plus derived data are deleted or queued for deletion; report incomplete deletion clearly.
-- **Account deletion:** revoke credentials, delete or anonymize personal data according to policy and legal obligations, and remove cloud objects.
+- **Delete:** local/cloud copies and derived data are deleted or queued for deletion; report incomplete deletion clearly.
+- **Account deletion:** revoke credentials, delete/anonymize personal data according to policy/legal obligations and remove cloud objects.
