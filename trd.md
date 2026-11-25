@@ -1,14 +1,12 @@
 # CallVault — Technical Requirements Document
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Status:** Engineering baseline; observed values separated from target choices  
-**Date:** 25 November 2026
+**Date:** 26 November 2026
 
 ## 1. Platform baseline
 
 ### Android — observed generated project
-
-The following values were supplied from the user's Android Studio project files:
 
 | Setting | Observed value |
 |---|---|
@@ -23,24 +21,23 @@ The following values were supplied from the user's Android Studio project files:
 | Java source/target compatibility | 11 |
 | Gradle modules | `:app` only |
 | UI | Jetpack Compose, Material 3 |
-| Plugin aliases | Android application; Kotlin Compose compiler |
 | Repositories | Google, Maven Central, Gradle Plugin Portal |
 
-The user reported successful Gradle sync/build and showed the starter app installed/launched on a Medium Phone API 37 emulator. This is an observed local result, not an independent CI verification.
-
-Do not upgrade/downgrade AGP, Gradle, Kotlin, SDK or Java settings solely because an IDE notification appears. Before adding compiler/build plugins such as KSP, verify compatibility against official release documentation and run a clean build.
+The user reported successful Gradle builds and showed the app running on a Medium Phone API 37.0 emulator. This is a local result, not independent CI verification.
 
 ### Android product baseline
 - Language: Kotlin.
 - UI: Jetpack Compose and Material 3.
-- IDE: Android Studio.
 - Build: Gradle Kotlin DSL and Version Catalog.
-- Primary physical test device: OnePlus 10T 5G, Android 15.
-- Emulator smoke test: Medium Phone API 37.0.
-- Local database: Room (planned, not yet added).
-- Background work: WorkManager (planned).
+- Primary physical test device: OnePlus 10T 5G, Android 15 (not yet tested).
+- Emulator: Medium Phone API 37.0.
+- Local database: Room (recording metadata foundation implemented).
+- Background work: WorkManager planned.
 - Playback: AndroidX Media3 or platform media APIs; selection pending.
 - Secure key storage: Android Keystore.
+
+### Room/KSP build note
+Room runtime, KTX and compiler dependencies and the KSP plugin were added through the version catalog. With AGP 9.5.3 built-in Kotlin, the user encountered a KSP Kotlin source-set registration error. The user added `android.disallowKotlinSourceSets=false` to `gradle.properties`, after which Gradle builds succeeded. This is a working compatibility workaround that must be revisited against official compatibility guidance before build-tool upgrades; it is not a permanent architecture decision.
 
 ### Backend target
 - Language: Java.
@@ -61,11 +58,11 @@ Do not upgrade/downgrade AGP, Gradle, Kotlin, SDK or Java settings solely becaus
 
 ## 2. Android project organization
 
-Current project is a single Gradle module `:app`. Use package boundaries initially:
+Current project is a single Gradle module `:app`. Package boundaries:
 - `core/designsystem`
-- `core/navigation` (planned)
-- `core/common` (planned)
-- `data/local`
+- `data/local/dao`
+- `data/local/database`
+- `data/local/entity`
 - `data/mapper`
 - `data/repository`
 - `domain/model`
@@ -78,9 +75,18 @@ Current project is a single Gradle module `:app`. Use package boundaries initial
 - `feature/backup`
 - `feature/settings`
 
-The user-created package tree already contains core.designsystem/components and theme, data.local/mapper/repository, domain.model/repository/usecase and the six feature packages. A generated `ui.theme` package remains. Consolidate/remove generated theme files only after inspecting their source and updating imports; do not delete blindly.
+A generated `ui.theme` package remains. Consolidate/remove generated theme files only after inspecting their source and updating imports; do not delete blindly. Do not create multiple Gradle modules in the first milestone.
 
-Do not create multiple Gradle modules in the first milestone. Reconsider only when build complexity, team ownership or test boundaries justify it.
+### Implemented recording data path
+- `Recording` domain model and `RecordingSource` enum (`IMPORTED`, future `CALL_RECORDING`).
+- `RecordingEntity` Room entity and `RecordingDao`.
+- `CallVaultDatabase` Room database, currently version 1.
+- Entity/domain mappers.
+- `RecordingRepository` interface and `RecordingRepositoryImpl`.
+- No transcript, summary, tag or processing-job entities are confirmed implemented.
+
+### Presentation architecture note
+The first import integration currently creates the repository/database access inside `HomeScreen` as temporary manual wiring. Move this into a ViewModel/presentation layer before adding further business behavior; the target remains MVVM/Clean Architecture boundaries.
 
 ## 3. Android permissions and recording constraints
 
@@ -99,22 +105,43 @@ Potential permissions to evaluate:
 
 Third-party VoIP apps may restrict playback capture. Do not promise WhatsApp audio capture. A source is supported only after a permitted mechanism is demonstrated and policy reviewed.
 
-## 4. Audio requirements
+## 4. Audio requirements and current import behavior
 
-- Candidate import formats: M4A/AAC, MP3, WAV, OGG/Opus; confirm actual decoder support.
-- Validate file content where practical, not extension alone.
-- Store audio in app-private storage.
+Current import implementation:
+- Home launches Android Storage Access Framework using `ActivityResultContracts.OpenDocument` with `audio/*`.
+- No broad storage permission was added to the manifest for this picker flow.
+- `AudioImportManager` currently accepts filename extensions MP3, M4A and WAV.
+- Selected content is copied to app-private `filesDir/recordings`.
+- Duration is read using `MediaMetadataRetriever`; file size, MIME type, display name and import timestamp are recorded.
+- Imported metadata is inserted through the Room repository.
+- Import/copy/metadata and database work is dispatched to `Dispatchers.IO`.
+- If repository insertion fails after copy, the UI attempts to delete the copied file.
+- A user screenshot demonstrated one successful MP3 import (`sample-3s`, 3 seconds, 51 KB) on API 37 emulator.
+
+Known gaps:
+- Extension validation is not equivalent to validating file content; add content/format validation.
+- Current accepted extension set is intentionally narrower than the candidate list below.
+- Size limits, large-file behavior, interrupted copy and corrupt-file tests are not complete.
+- Restart persistence has not yet been verified by the user.
+- Playback is not implemented.
+- Local audio encryption at rest is not implemented.
+
+Candidate future formats: M4A/AAC, MP3, WAV, OGG/Opus; confirm actual decoder support before advertising.
+
+General requirements:
 - Keep metadata separate from file bytes.
 - Handle partial writes and interrupted imports/recordings.
-- Verify duration, size and readability before marking complete.
+- Verify copied file before marking complete.
 - Do not delete source until an import copy is verified.
 - Playback releases resources on lifecycle changes.
 - Unsupported/corrupt formats show actionable errors.
 
 ## 5. Local database requirements
 
-Initial Room entities/tables planned:
+Implemented initial Room table:
 - `recordings`
+
+Future tables under consideration:
 - `transcripts`
 - `summaries`
 - `tags`
@@ -122,7 +149,7 @@ Initial Room entities/tables planned:
 - `processing_jobs`
 - `app_settings` only if DataStore/preferences are insufficient.
 
-Use stable UUID identifiers. Store timestamps consistently (UTC epoch milliseconds or ISO-8601). Store app-private relative file identifiers, not arbitrary external absolute paths. Use Room migrations and migration tests.
+Use stable UUID identifiers. Store timestamps consistently (UTC epoch milliseconds or ISO-8601). Store app-private relative file identifiers, not arbitrary external absolute paths. Room database is currently version 1; migrations and migration tests are not yet established.
 
 ## 6. Security requirements
 
@@ -193,17 +220,9 @@ Use vetted platform/library APIs. Do not invent a custom cipher or key-derivatio
 - Permission denial.
 - Device-specific capability assessment.
 
-### Backend
-- API/controller tests.
-- Authorization/ownership isolation.
-- Migration tests.
-- Upload authorization.
-- AI provider failure/retry.
-- Deletion propagation.
-
 ### Device matrix
 - OnePlus 10T / Android 15 (primary physical test target; not yet tested).
-- API 37 emulator (starter app launch verified).
+- API 37 emulator (Home and one audio import demonstrated).
 - At least one current Pixel and another OEM before broad release.
 - Document every Android version and source combination separately.
 
