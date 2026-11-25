@@ -5,7 +5,7 @@
 **Product direction:** Android-first hybrid  
 **Primary compatibility device:** OnePlus 10T 5G, Android 15  
 **Documentation baseline:** 25 November 2026  
-**Documentation version:** 1.0  
+**Documentation version:** 1.1  
 **Project status:** Android foundation created; product implementation not yet complete
 
 ## Product statement
@@ -104,3 +104,34 @@ See `memory.md` for the detailed verified baseline and outstanding work.
 - Keep proposed backend schema separate from implemented database migrations.
 - Keep visual inspiration separate from copied assets or protected layouts.
 - Record actual build output and device tests; do not claim tests that were not run.
+
+
+---
+
+
+## Documentation governance — v1.1 (25 November 2026)
+
+### Verified project baseline
+- Repository: `HarshVDubey/CallVault`, default branch `main`.
+- Android project lives under `android/` inside this repository.
+- Current Android build is a single Gradle module: `:app`.
+- User-provided configuration: Gradle 9.6.0; AGP 9.5.3; Kotlin 2.2.10; Compose BOM 2026.02.01; compileSdk 37; targetSdk 37; minSdk 26; Java source/target compatibility 11; namespace/applicationId `dev.callvault.app`.
+- User showed successful initial Gradle sync/build and starter-app launch on the Medium Phone API 37.0 emulator.
+- OnePlus 10T 5G / Android 15 remains the primary physical-device target; it has not yet been tested.
+- Package folders exist under the app source tree, but folder creation is not feature implementation.
+
+### Design decisions
+Premium dark visual direction, violet accent, and five-item bottom navigation are user-approved. The primary destinations are Home, Library, Insights, Backup and Settings. Individual color values and dimensions are proposed tokens pending emulator and physical-device validation.
+
+### Hallucination-prevention protocol
+For every implementation or status claim:
+1. Cite the exact source document, code path, test or observed device result.
+2. Mark it Confirmed, Proposed, Unverified or Blocked.
+3. Do not infer implementation from a folder, UI mockup, documentation entry or generated sample.
+4. Do not call a feature complete until its acceptance criteria and tests pass.
+5. Keep the implementation status in `memory.md` current.
+6. If a document is unavailable or a fact is not established, say so instead of filling the gap.
+
+### v1.1 change summary
+Reconciles the observed Android project baseline, package-based single-module architecture, Mobbin research supplied by the user, approved visual direction, Home-first implementation milestone, and explicit documentation/implementation status boundaries.
+
