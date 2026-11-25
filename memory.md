@@ -129,7 +129,12 @@ Research is used for interaction patterns, not copying exact layouts/assets. Ini
 - Reusable components implemented under `dev.callvault.app.core.designsystem.components`: `CVButton.kt` (primary and secondary), `CVCard.kt`, `CVRecordingBadge.kt`, and `CVEmptyState.kt`.
 - `CVDesignSystemPreview.kt` created and temporarily wired into `MainActivity.kt`.
 - User supplied emulator screenshots confirming the preview builds/runs and showing the corrected dark background, buttons, badge, card and empty state.
-- Current visible app is a design-system preview, not a production Home screen.
+- `HomeScreen.kt` implemented in `dev.callvault.app.feature.home`; includes branding/header, honest empty library overview, Import Audio and Recording Compatibility explanatory dialogs, Recent Recordings empty state and privacy note.
+- `MainActivity.kt` now launches the Home screen and provides five selectable bottom navigation destinations: Home, Library, Insights, Backup and Settings. The four non-Home destinations are placeholders.
+- User supplied an API 37 emulator screenshot confirming Home screen and five-tab navigation render.
+- Import Audio is not connected to Storage Access Framework; compatibility dialog is informational only. No real audio items/statistics or recording functionality exist.
+- Navigation uses temporary text glyphs rather than final Material icons.
+- Current app is a Home UI shell, not a functional audio library.
 
 ### Not implemented / not verified
 - Actual CallVault Home screen.
