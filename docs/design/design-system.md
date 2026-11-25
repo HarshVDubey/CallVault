@@ -1,6 +1,6 @@
 # CV Design System 1.0
 
-**Status:** Initial proposal based on user-approved visual direction and Mobbin research.  
+**Status:** Foundation implemented and visually checked in the API 37 emulator; tokens remain subject to accessibility and physical-device validation.  
 **Platform:** Android / Jetpack Compose / Material 3  
 **Direction:** Premium dark, violet accent, bottom navigation.
 
@@ -91,7 +91,20 @@ Primary destinations: Home, Library, Insights, Backup, Settings. Use Material 3 
 - Do not rely on color alone.
 - Respect system reduced-motion settings.
 
-## 10. Validation checklist
+## 10. Implementation status — 26 November 2026
+
+Implemented in the Android project:
+- `Color.kt`: CV semantic palette including dark surfaces, violet primary, text, outlines and status colors.
+- `Theme.kt`: Material 3 dark and light schemes; dark theme is the default; dynamic color defaults to false.
+- `Type.kt`: CallVault Material typography scale using the platform default font.
+- `Shapes.kt`: Material 3 shape scale.
+- `CVDesignSystemPreview.kt`: preview surface demonstrating primary/secondary buttons, recording badge, card and empty state.
+
+The user ran the preview on the Medium Phone API 37.0 emulator and supplied screenshots. The dark background correction was applied and visually confirmed. This is an emulator visual check, not automated accessibility or physical-device validation.
+
+Still pending: status-bar icon contrast/system-bar insets, font scaling, TalkBack checks, light theme review, narrow-screen review and OnePlus 10T validation.
+
+## 11. Validation checklist
 
 - Verify tokens on OnePlus 10T and emulator.
 - Check light-on-dark contrast.
