@@ -22,3 +22,11 @@
 - User verified successful emulator launch and supplied screenshots of the corrected dark preview on Medium Phone API 37.0.
 - Recorded Phase 1 as in progress; actual Home, five-tab navigation, Room, automated tests and OnePlus 10T validation remain outstanding.
 - Recorded status-bar icon contrast/system-bar inset polish as pending.
+
+## 2026-11-26 — Home screen UI milestone
+
+- Implemented initial Home screen with header, honest library overview, quick-action dialogs, recent-items empty state and privacy note.
+- Added five selectable bottom navigation destinations in `MainActivity`; four destinations remain placeholders.
+- User verified the Home screen and navigation render with an API 37 emulator screenshot.
+- Import Audio is not yet connected to Android Storage Access Framework; no real audio data, playback or recording is implemented.
+- Recorded temporary text-glyph navigation icons and status-bar contrast as polish items.
