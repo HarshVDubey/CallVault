@@ -1,119 +1,107 @@
 # CallVault — Development Phases and Delivery Plan
 
-**Version:** 0.1  
-**Status:** Proposed execution plan
+**Version:** 1.0  
+**Status:** Baseline delivery plan; phase exit gates are mandatory  
+**Date:** 25 November 2026
 
 ## Delivery strategy
 
-Android-first, with a strict feasibility gate for call audio capture. Build the local Android foundation and prove the device/source constraints before investing in AI and cloud features. Lovable is used for the companion web dashboard, not as a substitute for native Android capabilities.
+Android-first, with a strict feasibility gate for call-audio capture. Build the local Android foundation and validate device/source constraints before investing in cloud AI. Lovable is for the companion web dashboard, not a substitute for native Android capabilities.
 
-## Phase 0 — Discovery and compliance
+## Phase 0 — Discovery, feasibility and compliance
 
 **Objectives**
 - Review current Android audio capture APIs and restrictions.
 - Review Google Play policies relevant to call recording, sensitive data, foreground services, permissions and user data.
 - Define a test matrix for SIM calls, supported system recording paths, imported audio and third-party VoIP.
-- Confirm that all proposed recording methods are legitimate and transparent.
+- Confirm all proposed methods are legitimate, transparent and consent-aware.
 
 **Deliverables**
 - Recording feasibility report.
 - Device/source compatibility matrix.
 - Privacy and policy checklist.
-- Updated technical decision record.
+- Technical decision record.
 
 **Exit gate**
-- No implementation plan depends on privileged permissions unavailable to ordinary apps, hidden capture, root, Accessibility misuse or third-party app circumvention.
+- No plan relies on privileged permissions unavailable to ordinary apps, hidden capture, root, Accessibility misuse or third-party app circumvention.
+- Every proposed recording source is marked verified, unsupported or unverified.
 
-## Phase 1 — Android foundation
+## Phase 1 — Android foundation and first UI
 
 **Objectives**
-- Create native Kotlin/Compose project.
-- Establish MVVM/Clean Architecture boundaries.
-- Set up navigation and design system.
-- Configure Room and migration strategy.
-- Add basic app settings and test scaffolding.
+- Maintain native Kotlin/Compose project.
+- Establish package-based MVVM/Clean Architecture boundaries in the initial single Gradle module.
+- Implement design system and five-destination navigation.
+- Establish Room schema/migration approach.
+- Add test scaffolding and app settings foundation.
+- Implement Home screen using explicit demo fixtures during development only.
 
 **Deliverables**
-- CallVault Android project.
-- Home, Recordings, AI Insights, Backup and Settings navigation.
-- Domain models and repository interfaces.
-- Room database skeleton.
+- Android project and reproducible build.
+- Home, Library, Insights, Backup and Settings navigation.
+- Design tokens and reusable Compose components.
+- Domain models/repository interfaces.
+- Room foundation.
 - Build/run instructions.
 
 **Acceptance**
-- App builds and launches on OnePlus 10T / Android 15.
-- All navigation destinations work.
+- App builds and launches on the OnePlus 10T / Android 15.
+- Emulator smoke test passes.
+- All five navigation destinations work.
 - No fake recording feature is presented as operational.
 - Unit/instrumentation test baseline exists.
+- Documentation reflects actual code and test status.
 
-## Phase 2 — Audio library and recording feasibility
+**Current status:** Project generated, initial build/sync succeeded, starter app launched on API 37 emulator, package folders created. Feature UI, Room and OnePlus physical-device verification remain outstanding.
+
+## Phase 2 — Audio import, library and playback; recording feasibility
 
 **Objectives**
 - Implement audio import using Android Storage Access Framework.
-- Implement local metadata persistence.
-- Implement playback with Media3 or an appropriate Android media API.
-- Build a capability assessment screen.
-- Prototype only permitted recording mechanisms supported by test device and platform.
+- Persist local metadata.
+- Implement playback with Media3 or suitable platform API.
+- Build capability assessment.
+- Prototype only permitted recording mechanisms supported by test device/platform.
 
 **Deliverables**
 - Import flow.
 - Local library and playback.
 - Recording compatibility matrix.
 - Verified recording prototype only if a permitted path exists.
-- Clear unsupported/unverified UI states.
+- Unsupported/unverified UI states.
 
 **Acceptance**
 - Imported files are reliably listed and played.
-- Audio metadata survives app restart.
+- Metadata survives restart.
+- Import provenance is preserved.
 - Recording status cannot be confused with call-state detection.
-- Each claimed recording capability is verified on a documented device/OS/source combination.
+- Each claimed capability is verified on a documented device/OS/source combination.
 
-**Hard gate**
-If cellular or third-party VoIP audio cannot be captured through a permitted mechanism, the product remains useful as a recording manager/importer and must not claim otherwise.
+**Hard gate:** If cellular or third-party VoIP audio cannot be captured through a permitted mechanism, CallVault remains useful as a recording manager/importer and must not claim otherwise.
 
 ## Phase 3 — Local security and library polish
 
 **Objectives**
 - App-private audio storage.
-- Android Keystore-backed encryption design.
+- Android Keystore-backed encryption design and implementation review.
 - Rename, delete, search, sort and filter.
 - Storage management and file integrity checks.
 - Export/share via Android-supported user-mediated flows.
 
 **Deliverables**
-- Secure local storage.
+- Local storage implementation.
 - Complete local library.
 - Storage and privacy settings.
-- Tests for delete, missing files and interrupted operations.
+- Tests for deletion, missing files and interrupted operations.
 
-## Phase 4 — Lovable companion web dashboard
-
-**Objectives**
-- Build responsive web interface with Lovable.
-- Establish shared design tokens and component conventions.
-- Use mock data initially, clearly marked as demo.
-- Connect only after backend API contract is stable.
-
-**Deliverables**
-- Dashboard.
-- Recording library.
-- Transcript and summary views.
-- Backup status and settings.
-- Responsive desktop/mobile layout.
-
-**Acceptance**
-- No browser UI pretends to access native call audio.
-- All real data comes from authenticated APIs.
-- Demo data is clearly distinguished from synchronized user data.
-
-## Phase 5 — Backend foundation
+## Phase 4 — Backend foundation
 
 **Objectives**
 - Build Spring Boot modular monolith.
-- Add authentication and authorization.
+- Add authentication/authorization.
 - Define PostgreSQL schema and migrations.
 - Add recording metadata and transcript APIs.
-- Add audit/security events without storing audio in the relational database.
+- Add audit/security events without storing audio in relational database.
 
 **Deliverables**
 - Backend project.
@@ -122,13 +110,13 @@ If cellular or third-party VoIP audio cannot be captured through a permitted mec
 - API integration tests.
 - Secure token/session design.
 
-## Phase 6 — AI transcription and summaries
+## Phase 5 — AI transcription and summaries
 
 **Objectives**
-- Select a speech-to-text provider after evaluating cost, languages, retention and privacy.
+- Select speech-to-text provider after cost, language, retention and privacy evaluation.
 - Implement explicit user-triggered processing.
 - Store transcript and summary metadata.
-- Generate key points and action items.
+- Generate key points, decisions and action items.
 - Add cancellation/retry and provider failure handling.
 
 **Deliverables**
@@ -139,11 +127,12 @@ If cellular or third-party VoIP audio cannot be captured through a permitted mec
 
 **Acceptance**
 - User confirms before audio leaves device.
-- AI output is labelled as generated.
-- Provider secrets remain on backend, never embedded in app/web client.
+- AI output is labelled.
+- Provider secrets remain on backend.
 - User can delete source and derived data.
+- Provider retention/deletion terms are documented.
 
-## Phase 7 — Encrypted cloud backup and synchronization
+## Phase 6 — Encrypted cloud backup and synchronization
 
 **Objectives**
 - Implement client-side audio encryption.
@@ -155,19 +144,40 @@ If cellular or third-party VoIP audio cannot be captured through a permitted mec
 **Deliverables**
 - Backup/restore.
 - Sync status.
-- Retry and resumable upload where supported.
+- Retry/resumable upload as needed.
 - Key lifecycle and recovery design.
 
 **Acceptance**
-- Server/object storage does not receive plaintext audio.
+- Server/object storage receives ciphertext, not plaintext audio.
 - Restore integrity is verified.
-- Lost-key and account-recovery limitations are explained to users.
+- Lost-key limitations are disclosed.
+
+## Phase 7 — Lovable companion web dashboard
+
+**Objectives**
+- Build responsive React/TypeScript web client using Lovable.
+- Reuse approved design tokens and component conventions where practical.
+- Use mock data initially and label it as demo.
+- Connect only after backend API contract is stable.
+
+**Deliverables**
+- Dashboard.
+- Synchronized recording library.
+- Transcript and summary views.
+- Backup status and settings.
+- Responsive desktop/mobile layout.
+
+**Acceptance**
+- No browser UI pretends to access native call audio.
+- Real data comes from authenticated APIs.
+- Demo data is clearly distinguished from synchronized user data.
+- No database credentials or provider secrets in browser bundle.
 
 ## Phase 8 — Hardening and Google Play release
 
 **Objectives**
-- Security review and privacy review.
-- Device compatibility test matrix.
+- Security/privacy review.
+- Device compatibility tests.
 - Accessibility and performance checks.
 - Crash and upgrade testing.
 - Store listing, privacy policy and Data Safety declarations.
@@ -183,26 +193,26 @@ If cellular or third-party VoIP audio cannot be captured through a permitted mec
 - All advertised features work as described.
 - No policy bypass.
 - Permissions are necessary and justified.
-- Data deletion and user support processes work.
+- Data deletion and support processes work.
 
-## Suggested sequencing
+## Sequencing rules
 
-Do not estimate calendar dates until Phase 0 and the recording feasibility gate are complete. Prioritize in this order:
-
-1. Build and run Phase 1.
-2. Import and playback in Phase 2.
-3. Verify native recording capability.
+1. Complete Phase 1 foundation.
+2. Implement import and playback.
+3. Validate recording feasibility.
 4. Secure and polish local library.
 5. Build backend and AI.
-6. Build cloud backup and web companion.
-7. Release hardening.
+6. Build encrypted backup and web companion.
+7. Complete release hardening.
+
+Calendar estimates are intentionally not assigned until feasibility and provider decisions are resolved.
 
 ## Definition of done for every phase
 
 - Code reviewed.
 - Acceptance criteria passed.
 - Tests added and passing.
-- Error/empty/loading states handled.
+- Error/empty/loading/unsupported states handled.
 - Security and privacy implications reviewed.
 - Documentation updated.
 - No unsupported capability represented as complete.
