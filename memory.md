@@ -2,7 +2,7 @@
 
 **Purpose:** Durable handoff file for ChatGPT, coding assistants and contributors.  
 **Last updated:** 26 November 2026  
-**Memory version:** 1.1
+**Memory version:** 1.2
 
 ## 1. Project identity
 
@@ -23,7 +23,7 @@
 | Architecture | Hybrid Android + backend + companion web | Confirmed |
 | Native language/UI | Kotlin + Jetpack Compose | Confirmed |
 | Android architecture | MVVM with Clean Architecture boundaries | Confirmed |
-| Local database | Room | Approved target; not integrated yet |
+| Local database | Room | Integrated foundation |
 | Backend | Spring Boot modular monolith | Confirmed direction |
 | Backend language | Java | Confirmed |
 | Cloud relational DB | PostgreSQL | Confirmed direction |
@@ -69,13 +69,12 @@ A CallVault-controlled VoIP feature would be a separate product decision with pa
 ## 5. Repository and Android project facts
 
 - Repository: `HarshVDubey/CallVault`.
-- Default working branch at documentation baseline: `main`.
-- Android project directory is `android/` inside the repository root shown in Windows Explorer; root also contains `.git` and the Markdown documents.
-- User screenshots show the repository nested under Downloads/CallVault_Project_Documents/CallVault_Project_Documents. Use the actual local Git root shown by Android Studio; do not assume the earlier StudioProjects path.
+- Default working branch: `main`.
+- Android project directory: `android/` inside repository root.
 - Android package: `dev.callvault.app`.
 - Gradle modules: single `:app`.
-- Observed generated packages: core.designsystem.components/theme; data.local/mapper/repository; domain.model/repository/usecase; feature.home/recordings/player/insights/backup/settings; generated ui.theme remains; MainActivity.kt.
-- The screenshot proves package folders exist, not that each has implementation.
+- Current package boundaries include core.designsystem.components, data.local (dao/database/entity), data.mapper, data.repository, domain.model/repository/usecase, feature.home/recordings/player/insights/backup/settings, generated ui.theme and MainActivity.kt.
+- Package presence alone is not proof of feature implementation.
 
 ### Supplied build configuration
 
@@ -92,9 +91,9 @@ A CallVault-controlled VoIP feature would be a separate product decision with pa
 | namespace/applicationId | dev.callvault.app |
 | Module | :app |
 
-The user showed successful Gradle sync/build and successful installation/launch of the generated starter app on Medium Phone API 37.0 emulator. No clean CI build is verified. The OnePlus 10T physical device has not yet been used for compatibility tests.
+Room/KSP catalog entries and plugin were added. The user encountered an AGP built-in Kotlin/KSP source-set registration error and applied `android.disallowKotlinSourceSets=false` in `gradle.properties`; subsequent builds succeeded. Treat this as a working compatibility workaround, not a long-term resolution. Reassess before upgrading AGP/Kotlin/KSP.
 
-No Room, Navigation Compose, Media3, WorkManager, backend or AI dependencies are confirmed as added. Do not claim they are integrated.
+The user reported successful builds after Room setup, DAO cleanup methods, repository implementation and Home import integration. No clean CI build is verified. OnePlus 10T physical testing remains outstanding.
 
 ## 6. Design research supplied
 
@@ -115,59 +114,63 @@ Research is used for interaction patterns, not copying exact layouts/assets. Ini
 
 ## 7. Current implementation status
 
-### Verified complete
+### Verified implemented
 - GitHub repository connected/access available to assistant.
-- Android project created in repository's `android/` folder.
-- Kotlin/Compose starter project generated.
-- Gradle sync/build succeeded in user's environment.
-- Starter app installed/launched on API 37 emulator.
-- Initial package folders created.
-- Mobbin design direction and reference screenshots supplied.
-- Home screen first-milestone scope defined.
-- CV Design System 1.0 theme foundation implemented in `dev.callvault.app.ui.theme`: `Color.kt`, `Theme.kt`, `Type.kt`, and new `Shapes.kt`.
-- Material 3 CallVault color schemes implemented; dark mode is the default and dynamic color is disabled by default.
-- Reusable components implemented under `dev.callvault.app.core.designsystem.components`: `CVButton.kt` (primary and secondary), `CVCard.kt`, `CVRecordingBadge.kt`, and `CVEmptyState.kt`.
-- `CVDesignSystemPreview.kt` created and temporarily wired into `MainActivity.kt`.
-- User supplied emulator screenshots confirming the preview builds/runs and showing the corrected dark background, buttons, badge, card and empty state.
-- `HomeScreen.kt` implemented in `dev.callvault.app.feature.home`; includes branding/header, honest empty library overview, Import Audio and Recording Compatibility explanatory dialogs, Recent Recordings empty state and privacy note.
-- `MainActivity.kt` now launches the Home screen and provides five selectable bottom navigation destinations: Home, Library, Insights, Backup and Settings. The four non-Home destinations are placeholders.
-- User supplied an API 37 emulator screenshot confirming Home screen and five-tab navigation render.
-- Import Audio is not connected to Storage Access Framework; compatibility dialog is informational only. No real audio items/statistics or recording functionality exist.
-- Navigation uses temporary text glyphs rather than final Material icons.
-- Current app is a Home UI shell, not a functional audio library.
+- Kotlin/Compose Android project in repository's `android/` directory.
+- Gradle sync/build and API 37 emulator launch succeeded in user's environment.
+- CV Design System foundation: semantic colors, Material 3 dark/light schemes, typography, shapes and reusable button/card/recording-badge/empty-state components.
+- Home screen and five-destination bottom navigation shell implemented; Library, Insights, Backup and Settings are still placeholder destinations.
+- Room foundation implemented:
+  - `domain/model/Recording.kt` with `RecordingSource.IMPORTED` and future `CALL_RECORDING` category.
+  - `data/local/entity/RecordingEntity.kt`.
+  - `data/local/dao/RecordingDao.kt` with insert, update, delete, observe list/count, get by ID and delete by ID.
+  - `data/local/database/CallVaultDatabase.kt`, database version 1.
+  - `data/mapper/RecordingMapper.kt`.
+  - `domain/repository/RecordingRepository.kt`.
+  - `data/repository/RecordingRepositoryImpl.kt`.
+- `AudioImportManager.kt` copies selected MP3, M4A or WAV audio into app-private `filesDir/recordings`, extracts duration with `MediaMetadataRetriever`, and returns a domain Recording marked `IMPORTED`.
+- `AudioImportManager.deleteImportedFile()` cleanup helper restricts deletion to files directly inside the recordings directory.
+- Home uses Android `OpenDocument` SAF picker with `audio/*`, performs import/database work on `Dispatchers.IO`, inserts through repository, observes recordings via Flow and displays count, total duration and recent imported items.
+- If repository insertion fails after file copy, Home attempts to delete the copied file.
+- User supplied successful build reports after each Room/repository/cleanup stage.
+- User supplied screenshot showing a successful import: item title `sample-3s`, duration 00:03, size 51 KB, Home Audio items count 1 and total duration 00:03.
+
+### Verified behavior boundaries
+- The screenshot demonstrates one successful import on Medium Phone API 37.0 emulator.
+- The imported item appears in the live Home UI after the picker flow.
+- Persistence after force-stop/relaunch has not yet been reported or verified.
+- Supported extension validation currently allows MP3, M4A and WAV only; the picker may display other audio types, which should produce an unsupported-format message.
+- Import metadata is persisted via Room; actual playback has not been implemented.
+- The app-private copied audio is not encrypted at rest yet.
+- The UI currently creates repository/database access directly in the composable as an initial integration shortcut. Refactor into a ViewModel/presentation layer before expanding feature complexity.
 
 ### Not implemented / not verified
-- Actual CallVault Home screen.
-- Five-destination working navigation.
-- Room database/entities/DAOs/migrations.
-- Import flow.
-- Playback engine.
-- Recording capability adapter.
-- SIM or VoIP audio capture.
-- Transcription/AI summaries.
-- Backend.
-- PostgreSQL migrations.
-- Encrypted cloud backup.
-- Lovable web dashboard.
-- OnePlus physical-device testing.
-- Google Play compliance review.
-- Automated tests for the new design-system components.
-- Status-bar icon contrast/system-bar inset polish; dark status-bar icons were noticed in the emulator screenshot and remain to be corrected/verified.
+- Force-stop/relaunch persistence verification.
+- Full Library screen, search, sorting, rename and delete interactions.
+- Playback engine and player UI.
+- Import size limits, content sniffing and broader corruption/large-file tests.
+- Automated unit/instrumentation tests and CI.
+- OnePlus 10T / Android 15 physical-device testing.
+- SIM or third-party VoIP call-audio capture.
+- Recording capability matrix.
+- Transcription, AI summaries, backend, PostgreSQL migrations, encrypted cloud backup and Lovable web dashboard.
+- Keystore-backed local file encryption.
+- Final navigation icons and status-bar/inset polish.
 
 ### Current phase status — 26 November 2026
-**Phase 1 — Android foundation and first UI: IN PROGRESS.** The design-system foundation and reusable component preview are implemented and visually verified by user screenshot on the API 37 emulator. This does not complete Phase 1: Home, navigation, Room, automated test baseline and OnePlus physical-device validation are still pending.
+- **Phase 1 — Android foundation and first UI: IN PROGRESS.** Design system, Home/navigation shell, Room foundation and build baseline are present; automated tests and physical-device validation remain.
+- **Phase 2 — Import, library and playback: IN PROGRESS.** First SAF import path and Room metadata insertion are demonstrated on emulator; persistence after restart, Library management and playback remain.
 
-### Design-system implementation paths
-- `android/app/src/main/java/dev/callvault/app/ui/theme/Color.kt`
-- `android/app/src/main/java/dev/callvault/app/ui/theme/Theme.kt`
-- `android/app/src/main/java/dev/callvault/app/ui/theme/Type.kt`
-- `android/app/src/main/java/dev/callvault/app/ui/theme/Shapes.kt`
-- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVButton.kt`
-- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVCard.kt`
-- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVRecordingBadge.kt`
-- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVEmptyState.kt`
-- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVDesignSystemPreview.kt`
-- `android/app/src/main/java/dev/callvault/app/MainActivity.kt` currently launches the preview.
+### Important implementation paths
+- `android/app/src/main/java/dev/callvault/app/feature/home/HomeScreen.kt`
+- `android/app/src/main/java/dev/callvault/app/data/repository/AudioImportManager.kt`
+- `android/app/src/main/java/dev/callvault/app/data/repository/RecordingRepositoryImpl.kt`
+- `android/app/src/main/java/dev/callvault/app/data/local/dao/RecordingDao.kt`
+- `android/app/src/main/java/dev/callvault/app/data/local/database/CallVaultDatabase.kt`
+- `android/app/src/main/java/dev/callvault/app/data/local/entity/RecordingEntity.kt`
+- `android/app/src/main/java/dev/callvault/app/data/mapper/RecordingMapper.kt`
+- `android/app/src/main/java/dev/callvault/app/domain/model/Recording.kt`
+- `android/app/src/main/java/dev/callvault/app/domain/repository/RecordingRepository.kt`
 
 ## 8. Delivery order
 
@@ -211,3 +214,6 @@ See `phases.md` for exit criteria.
 | 2026-11-25 | Premium dark + violet + bottom navigation | User-approved visual direction |
 | 2026-11-25 | Home first | First UI implementation milestone |
 | 2026-11-25 | Documentation-first governance | Prevent architectural drift and unsupported claims |
+| 2026-11-26 | Room-backed local recording metadata | Persist imported audio metadata separately from private audio files |
+| 2026-11-26 | SAF-based audio import | User-mediated file selection without broad storage permission |
+| 2026-11-26 | First emulator import demonstrated | `sample-3s` appeared in Home with duration and file size; restart persistence still to verify |
