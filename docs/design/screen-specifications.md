@@ -1,7 +1,7 @@
 # CallVault — Screen Specifications
 
-**Version:** 1.0  
-**Status:** Home screen initial UI implemented and visually checked on API 37 emulator; other screens remain specification-only.
+**Version:** 1.1  
+**Status:** Home screen and first SAF import path implemented and visually checked on API 37 emulator; other screens remain specification-only.
 
 ## 1. Shared screen rules
 
@@ -19,49 +19,54 @@
 Summarize the user's local library and provide entry points to common tasks.
 
 ### Layout
-1. Header: CallVault identity, greeting and profile action.
-2. Overview: local item count, total duration and storage usage.
+1. Header: CallVault identity and supporting tagline.
+2. Overview: local item count and total duration.
 3. Quick actions: Import audio; Recording compatibility.
 4. Recent recordings.
-5. AI insights preview only when real results exist.
-6. Mini-player only when actual media is playing.
-7. Five-item bottom navigation.
+5. Privacy-first information card.
+6. Five-item bottom navigation.
 
 ### Behavior
-- Tapping an item opens Recording Details.
 - Import opens Android Storage Access Framework picker.
-- Compatibility opens source/device status.
-- Insights preview opens the relevant real result.
-- Mini-player opens Full Player.
+- Compatibility opens the current source/device status explanation.
+- Recent items are observed from the Room-backed repository.
 - Bottom navigation changes primary destination.
+- No mini-player is shown until actual media playback exists.
 
 ### States
 - First-use empty.
-- Loading.
+- Importing.
 - Populated.
-- Offline.
-- Error.
-- No AI insights.
-- No active playback.
+- Import success.
+- Import failure.
+- Compatibility information.
 
 ### Acceptance
 - Layout adapts to compact device sizes and font scaling.
 - Navigation works.
-- Import action opens system picker when implemented.
-- Counts/storage reflect actual local data, or are clearly marked as development fixture.
+- Import action opens system picker.
+- Counts and duration reflect Room-backed local recordings.
+- Import runs off the main thread.
+- Imported files are copied into app-private storage.
+- Import provenance is marked `IMPORTED`.
 - No fake recording indicator or fake playback state.
 
 ### Home implementation status — 26 November 2026
 
 Implemented in `android/app/src/main/java/dev/callvault/app/feature/home/HomeScreen.kt`:
 - CallVault header and supporting tagline.
-- Library overview with intentionally unavailable values (`—`) rather than fabricated statistics.
-- Import Audio and Recording Compatibility actions that currently open explanatory dialogs.
-- Recent Recordings honest empty state.
+- Library overview with live item count and summed duration from Room Flow.
+- Import Audio action launches `ActivityResultContracts.OpenDocument` with `audio/*`.
+- Import runs through `AudioImportManager` and `RecordingRepositoryImpl` on `Dispatchers.IO`.
+- Import progress and result/error dialog.
+- Recent Recordings shows up to five imported items with title, duration, size and Imported audio provenance.
+- Recording Compatibility remains an explanatory dialog; no capture capability is claimed.
 - Privacy-first information card.
 - Five-destination bottom navigation shell in `MainActivity.kt`.
 
-The user supplied an emulator screenshot confirming the Home layout and bottom navigation render on Medium Phone API 37.0. Library, Insights, Backup and Settings are placeholder destinations. The import picker, local data, recording compatibility assessment and functional library are not connected yet. Temporary text glyphs are used for navigation icons.
+Evidence: user supplied an API 37 emulator screenshot showing successful import of `sample-3s`; Home displayed 1 audio item, total duration 00:03, and the item as 00:03 / 51 KB. User also reported successful Gradle builds during Room/repository integration. Force-stop/relaunch persistence and physical-device behavior remain unverified.
+
+Implementation note: repository/database creation currently occurs in the composable as a temporary manual-wiring approach. Refactor into a ViewModel/presentation layer before adding more Home behavior.
 
 ## 3. Library
 
@@ -83,6 +88,9 @@ Find and manage local audio items.
 
 ### States
 Empty, loading, populated, no results, offline (for cloud data), missing file, unsupported format, error.
+
+### Current status
+The Home screen displays recent Room-backed imports, but the dedicated Library destination is still a placeholder. Search, sorting, filtering, details, rename, delete and export are not implemented.
 
 ## 4. Recording Details
 
