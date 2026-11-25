@@ -1,7 +1,7 @@
 # CallVault — Component Library
 
 **Version:** 1.0  
-**Status:** Component inventory and behavior proposal; not yet implemented.
+**Status:** Initial foundation components implemented and visually checked in the API 37 emulator; remaining inventory is still proposed.
 
 ## 1. Principles
 
@@ -84,6 +84,23 @@ Proposed order:
 - Status badges include text, not color alone.
 - No demo fixture may be confused with user audio.
 
-## 8. Implementation status
+## 8. Implementation status — 26 November 2026
 
-All components are specified, not yet implemented. Add components incrementally and record file paths/tests in the implementation status section of `memory.md`.
+### Implemented
+
+| Component | File | Status |
+|---|---|---|
+| CVPrimaryButton | `CVButton.kt` | Implemented; previewed |
+| CVSecondaryButton | `CVButton.kt` | Implemented; previewed |
+| CVCard | `CVCard.kt` | Implemented; previewed |
+| CVRecordingBadge | `CVRecordingBadge.kt` | Implemented; previewed with Recording/Saved labels |
+| CVEmptyState | `CVEmptyState.kt` | Implemented; previewed |
+| Design-system preview | `CVDesignSystemPreview.kt` | Implemented; launched in API 37 emulator |
+
+Package: `dev.callvault.app.core.designsystem.components`.
+
+### Not yet implemented
+
+All other components in the inventory, including CVScaffold, CVTopBar, CVIconButton, status/error/loading states, audio/player components, AI components and backup/privacy components.
+
+The current implementations are presentation components. They do not record audio, play media, access repositories or perform backup/transcription. Automated component tests and accessibility validation remain pending.
