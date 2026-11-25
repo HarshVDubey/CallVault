@@ -1,8 +1,8 @@
 # CallVault — Project Memory and Decision Log
 
 **Purpose:** Durable handoff file for ChatGPT, coding assistants and contributors.  
-**Last updated:** 25 November 2026  
-**Memory version:** 1.0
+**Last updated:** 26 November 2026  
+**Memory version:** 1.1
 
 ## 1. Project identity
 
@@ -124,6 +124,12 @@ Research is used for interaction patterns, not copying exact layouts/assets. Ini
 - Initial package folders created.
 - Mobbin design direction and reference screenshots supplied.
 - Home screen first-milestone scope defined.
+- CV Design System 1.0 theme foundation implemented in `dev.callvault.app.ui.theme`: `Color.kt`, `Theme.kt`, `Type.kt`, and new `Shapes.kt`.
+- Material 3 CallVault color schemes implemented; dark mode is the default and dynamic color is disabled by default.
+- Reusable components implemented under `dev.callvault.app.core.designsystem.components`: `CVButton.kt` (primary and secondary), `CVCard.kt`, `CVRecordingBadge.kt`, and `CVEmptyState.kt`.
+- `CVDesignSystemPreview.kt` created and temporarily wired into `MainActivity.kt`.
+- User supplied emulator screenshots confirming the preview builds/runs and showing the corrected dark background, buttons, badge, card and empty state.
+- Current visible app is a design-system preview, not a production Home screen.
 
 ### Not implemented / not verified
 - Actual CallVault Home screen.
@@ -140,6 +146,23 @@ Research is used for interaction patterns, not copying exact layouts/assets. Ini
 - Lovable web dashboard.
 - OnePlus physical-device testing.
 - Google Play compliance review.
+- Automated tests for the new design-system components.
+- Status-bar icon contrast/system-bar inset polish; dark status-bar icons were noticed in the emulator screenshot and remain to be corrected/verified.
+
+### Current phase status — 26 November 2026
+**Phase 1 — Android foundation and first UI: IN PROGRESS.** The design-system foundation and reusable component preview are implemented and visually verified by user screenshot on the API 37 emulator. This does not complete Phase 1: Home, navigation, Room, automated test baseline and OnePlus physical-device validation are still pending.
+
+### Design-system implementation paths
+- `android/app/src/main/java/dev/callvault/app/ui/theme/Color.kt`
+- `android/app/src/main/java/dev/callvault/app/ui/theme/Theme.kt`
+- `android/app/src/main/java/dev/callvault/app/ui/theme/Type.kt`
+- `android/app/src/main/java/dev/callvault/app/ui/theme/Shapes.kt`
+- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVButton.kt`
+- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVCard.kt`
+- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVRecordingBadge.kt`
+- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVEmptyState.kt`
+- `android/app/src/main/java/dev/callvault/app/core/designsystem/components/CVDesignSystemPreview.kt`
+- `android/app/src/main/java/dev/callvault/app/MainActivity.kt` currently launches the preview.
 
 ## 8. Delivery order
 
