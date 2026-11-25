@@ -1,6 +1,6 @@
 # CallVault — Application Flow
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Primary client:** Android  
 **Companion client:** Web dashboard  
 **Navigation labels:** Home, Library, Insights, Backup, Settings
@@ -22,8 +22,10 @@ flowchart TD
   DETAIL --> SUMMARY["AI summary"]
   DETAIL --> ACTIONS["Rename / Delete / Export"]
   LIB --> IMPORT["Import audio"]
-  IMPORT --> VALIDATE["Validate and copy"]
-  VALIDATE --> DETAIL
+  IMPORT --> PICKER["Android SAF picker"]
+  PICKER --> COPY["Copy to app-private storage"]
+  COPY --> ROOM["Persist metadata in Room"]
+  ROOM --> HOME
   CAP --> SUPPORTED["Supported / verified"]
   CAP --> UNSUPPORTED["Unsupported / unverified"]
   SUPPORTED --> CONSENT["Disclosure and consent"]
@@ -60,19 +62,19 @@ Five destinations:
 4. Backup.
 5. Settings.
 
-The bottom navigation is persistent on primary destinations. Secondary screens such as Recording Details and Full Player may use their own top app bars and navigation behavior.
+The bottom navigation is persistent on primary destinations. Secondary screens such as Recording Details and Full Player may use their own top app bars and navigation behavior. Only Home is currently a functional destination; the other tabs remain placeholders.
 
 ## 4. Home dashboard
 
-Display:
-- Library item count.
-- Total local audio duration.
-- Local storage usage.
-- Recent items.
-- Recording compatibility entry point.
-- AI preview only when actual generated insights exist.
-- Backup status only when backup is configured.
-- Import action.
+Current Home displays:
+- Room-backed local item count.
+- Sum of imported recording durations.
+- Recent imported items (up to five).
+- Import Audio action.
+- Recording Compatibility information action.
+- Privacy-first information card.
+
+The Home screen currently does not display storage usage, AI insights preview or a mini-player. Those remain future enhancements.
 
 For a new user, show an empty state with:
 - Import audio action.
@@ -81,40 +83,41 @@ For a new user, show an empty state with:
 
 Do not show a recording-now indicator unless a real permitted session is active. Do not show a mini-player unless real media is playing.
 
-### First Home milestone
-- Header: CallVault branding, greeting and profile action.
-- Overview: local item count, total duration and storage usage.
-- Quick actions: Import audio and Recording compatibility.
-- Recent recordings.
-- AI insights preview when available.
-- Mini-player when active.
-- Bottom navigation.
-
-Development fixtures may be used temporarily but must be visibly identified in development and excluded from production.
-
 ## 5. Recording compatibility flow
 
 1. User opens Recording compatibility.
 2. App explains call-state detection and call-audio access are different.
-3. App displays separate rows for cellular SIM and third-party VoIP.
+3. App should display separate rows for cellular SIM and third-party VoIP when a capability assessment is implemented.
 4. Each row is Supported (verified), Unsupported or Unverified.
 5. Unsupported explains platform/source limitations.
 6. Supported states identify exact tested device/OS/source and required disclosures.
 7. User proceeds only through permitted recording flow.
 
-No active Start Recording control for unsupported or unverified source.
+Current UI is an informational dialog only. No SIM or third-party VoIP capture path is verified; no active Start Recording control is exposed.
 
 ## 6. Import audio flow
 
-1. User taps Import.
-2. Android system picker opens through Storage Access Framework.
-3. User selects an audio file.
-4. App validates type, size and readability.
-5. App obtains duration and metadata.
-6. App copies into app-private storage if required.
-7. App verifies copied file.
-8. App creates library item with source `IMPORTED`.
-9. User opens item and plays it.
+### Implemented first path
+1. User taps Import Audio on Home.
+2. Android system picker opens through `ActivityResultContracts.OpenDocument` using MIME filter `audio/*`.
+3. User selects a file.
+4. `AudioImportManager` reads display name and currently accepts MP3, M4A and WAV filename extensions.
+5. File is copied to app-private `filesDir/recordings`.
+6. Duration is read with `MediaMetadataRetriever`; title, MIME type, size and import timestamp are captured.
+7. A Room-backed `Recording` is inserted with source `IMPORTED`.
+8. Home observes the Room Flow and updates item count, total duration and recent list.
+9. A success or error dialog reports the result.
+
+Import and database operations run on `Dispatchers.IO`. If repository insertion fails after copy, the copied file is removed where cleanup succeeds.
+
+User demonstrated one successful import of `sample-3s` on Medium Phone API 37.0 emulator: 3 seconds, 51 KB, displayed as one item on Home.
+
+### Not yet verified / implemented
+- Persistence after force-stop/relaunch.
+- Content sniffing beyond filename extension.
+- Large-file limits and interrupted-copy recovery tests.
+- Full Library list, search, sort/filter, rename/delete.
+- Playback and Recording Details.
 
 ## 7. Recording session flow
 
@@ -132,6 +135,7 @@ If capture fails, do not create completed recording entry. Show recoverable fail
 
 ## 8. Library flow
 
+Planned:
 - Show local recordings and imported audio.
 - Search by supported metadata fields.
 - Sort/filter by date, source and status.
@@ -139,7 +143,7 @@ If capture fails, do not create completed recording entry. Show recoverable fail
 - Open item details.
 - Offer rename, delete and user-mediated export/share.
 
-Transcript search is enabled only after transcript data exists and the corresponding search implementation is built.
+The current Library tab is a placeholder. Transcript search is enabled only after transcript data exists and corresponding search implementation is built.
 
 ## 9. Recording detail and player
 
@@ -155,6 +159,8 @@ Full player:
 - Playback speed and skip controls only when implemented.
 - Transcript navigation and timestamp seeking only when timestamp data is available.
 - Mini-player reflects actual playback state.
+
+No playback implementation is currently verified.
 
 ## 10. AI processing flow
 
