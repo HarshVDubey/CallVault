@@ -81,10 +81,18 @@ Verified from the user's Android Studio screenshots and supplied build files:
 - Kotlin/Compose Android project generated.
 - Gradle sync/build completed and the starter app launched in an API 37 emulator.
 - Initial package folders were created for core design system, data, domain and features.
-- Current starter screen is still the generated Android greeting; CallVault screens and functional recording features are not implemented.
+- CV Design System 1.0 foundations are implemented in the Android app: semantic color palette, dark/light Material 3 schemes, typography, shapes, reusable buttons, card, recording badge and empty state.
+- `CVDesignSystemPreview` is wired into `MainActivity` and was launched successfully in the API 37 emulator; the user supplied a screenshot showing the dark preview.
+- The current app entry point is the design-system preview, not the actual CallVault Home screen.
+- Five-destination navigation, actual Home screen and functional recording/library features are not implemented.
 - OnePlus 10T physical-device testing is pending.
 
 See `memory.md` for the detailed verified baseline and outstanding work.
+
+### Current delivery phase (26 November 2026)
+- **Phase 1 — Android foundation and first UI: IN PROGRESS.**
+- Design-system foundation and reusable component preview: implemented and emulator-verified by user screenshot.
+- Actual Home screen, five-destination navigation, Room foundation, test baseline and OnePlus 10T verification: pending.
 
 ## How to work with this repository
 
