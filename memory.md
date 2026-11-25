@@ -1,129 +1,185 @@
 # CallVault — Project Memory and Decision Log
 
-**Purpose:** Durable handoff file for future ChatGPT/Copilot/Lovable sessions.  
-**Last updated:** 25 November 2026
+**Purpose:** Durable handoff file for ChatGPT, coding assistants and contributors.  
+**Last updated:** 25 November 2026  
+**Memory version:** 1.0
 
 ## 1. Project identity
 
-- Name: CallVault (working name; trademark/domain clearance not yet done).
-- Product: privacy-first audio recording management, transcription, AI summaries and optional encrypted backup.
+- Name: CallVault (working name; trademark/domain clearance not completed).
+- Product: privacy-first audio library, playback, search, transcription, AI summaries and optional encrypted backup.
 - Distribution goal: Google Play Store.
 - Primary platform: Android.
 - Development strategy: hybrid.
-- Priority: working Android application, not web prototype.
-- Initial test device: OnePlus 10T 5G running Android 15.
+- Priority: working Android app, not web prototype.
+- Primary physical compatibility target: OnePlus 10T 5G / Android 15.
 
-## 2. Confirmed decisions
+## 2. User-approved decisions
 
-| Area | Decision |
-|---|---|
-| Architecture | Hybrid Android + companion web + backend |
-| Priority | Android-first |
-| Android language | Kotlin |
-| Android UI | Jetpack Compose |
-| Android architecture | MVVM with Clean Architecture boundaries |
-| Local DB | Room |
-| Backend | Spring Boot modular monolith initially |
-| Backend language | Java |
-| Cloud relational DB | PostgreSQL |
-| Web builder | Lovable |
-| Web client | React/TypeScript generated through Lovable |
-| Audio backup | Private object storage, encrypted client-side |
-| Product goal | Google Play Store |
-| Core features | Library, playback, search, transcription, summaries, backup |
+| Area | Decision | Status |
+|---|---|---|
+| Product | CallVault | Working name |
+| Platform | Android-first | Confirmed |
+| Architecture | Hybrid Android + backend + companion web | Confirmed |
+| Native language/UI | Kotlin + Jetpack Compose | Confirmed |
+| Android architecture | MVVM with Clean Architecture boundaries | Confirmed |
+| Local database | Room | Approved target; not integrated yet |
+| Backend | Spring Boot modular monolith | Confirmed direction |
+| Backend language | Java | Confirmed |
+| Cloud relational DB | PostgreSQL | Confirmed direction |
+| Web builder | Lovable | Confirmed |
+| Web client | React/TypeScript | Target |
+| Backup | Optional client-side encrypted audio backup | Requirement |
+| Distribution | Google Play Store | Goal |
+| Call types | Cellular SIM and internet/VoIP both desired, subject to feasibility | User preference |
+| Recording modes | Manual and automatic both desired, subject to feasibility/policy | User preference |
+| Product features | Playback, search, transcription, summaries, backup | User-selected scope |
+| Design style | Premium | Confirmed |
+| Theme | Dark | Confirmed direction |
+| Accent | Violet | Confirmed |
+| Primary navigation | Bottom navigation | Confirmed |
+| Main destinations | Home, Library, Insights, Backup, Settings | Confirmed visual/navigation naming |
 
-## 3. Product requirements from user
-
-The user wants support for:
-- Normal SIM calls (incoming and outgoing), where Android/device policy and a permitted capture path allow it.
-- Internet calls, including interest in WhatsApp, subject to third-party app and Android restrictions.
-- Manual and automatic recording where supported.
-- Playback.
-- Search.
-- Transcription.
-- AI summaries.
-- Cloud backup.
-- Google Play distribution.
-
-## 4. Critical constraints
+## 3. Critical product constraints
 
 - Never promise universal SIM call recording.
 - Never promise universal WhatsApp/third-party VoIP recording.
 - Call-state detection does not imply call-audio access.
-- Android restricts internal call audio capture for ordinary third-party applications.
+- Android restricts internal call-audio capture for ordinary third-party apps.
 - Do not use Accessibility Services to bypass recording restrictions.
-- Do not use root-only, privileged permission or hidden recording workarounds.
-- Do not fake recording state or present imported/demo audio as CallVault-recorded audio.
-- Recording must be transparent, user-visible and consent-aware.
+- Do not use root-only, privileged permission or hidden capture workarounds.
+- Do not fake recording state or present imported/demo audio as CallVault-recorded.
+- Recording must be transparent, visible and consent-aware.
 - Cloud AI processing requires explicit user action and disclosure.
 - Audio backup must be encrypted client-side before upload.
-- Check current Android and Google Play requirements before release; target SDK policy can change.
+- Verify current Android and Google Play requirements before release; target SDK rules can change.
 
-## 5. Important product distinction
+## 4. Product distinction
 
-CallVault can be valuable even when cellular/third-party call recording is unavailable:
+CallVault remains useful if cellular/third-party call recording is unavailable:
 - Import and manage audio.
 - Play and search local recordings.
 - Transcribe user-selected files.
 - Summarize conversations.
 - Back up encrypted audio.
-- Offer recording only on verified, permitted configurations.
+- Offer recording only on verified permitted configurations.
 
-If a future VoIP calling feature is considered, it must be a separately scoped product feature with participant consent and legal/policy review.
+A CallVault-controlled VoIP feature would be a separate product decision with participant consent and legal/policy review.
 
-## 6. Project delivery order
+## 5. Repository and Android project facts
 
-1. Phase 0: Android/Play policy and recording feasibility discovery.
-2. Phase 1: Android foundation.
-3. Phase 2: import, playback and device recording feasibility.
-4. Phase 3: local security and library polish.
-5. Phase 4: Lovable web companion.
-6. Phase 5: Spring Boot backend.
-7. Phase 6: transcription and AI summaries.
-8. Phase 7: encrypted backup and sync.
-9. Phase 8: security, compliance and Play Store release.
+- Repository: `HarshVDubey/CallVault`.
+- Default working branch at documentation baseline: `main`.
+- Android project directory is `android/` inside the repository root shown in Windows Explorer; root also contains `.git` and the Markdown documents.
+- User screenshots show the repository nested under Downloads/CallVault_Project_Documents/CallVault_Project_Documents. Use the actual local Git root shown by Android Studio; do not assume the earlier StudioProjects path.
+- Android package: `dev.callvault.app`.
+- Gradle modules: single `:app`.
+- Observed generated packages: core.designsystem.components/theme; data.local/mapper/repository; domain.model/repository/usecase; feature.home/recordings/player/insights/backup/settings; generated ui.theme remains; MainActivity.kt.
+- The screenshot proves package folders exist, not that each has implementation.
 
-Do not build backend/AI complexity before the local Android foundation and recording feasibility gate.
+### Supplied build configuration
 
-## 7. Current progress at last update
+| Setting | Value |
+|---|---|
+| Gradle wrapper | 9.6.0 |
+| AGP | 9.5.3 |
+| Kotlin | 2.2.10 |
+| Compose BOM | 2026.02.01 |
+| compileSdk | 37 |
+| targetSdk | 37 |
+| minSdk | 26 |
+| Java source/target | 11 |
+| namespace/applicationId | dev.callvault.app |
+| Module | :app |
 
-- Product concept and hybrid architecture agreed.
-- Android-first priority agreed.
-- OnePlus 10T / Android 15 identified as initial test device.
-- Initial Phase 1 Android Studio setup instructions provided.
-- User then asked to prepare the project documentation.
-- No confirmation yet that the Android Studio project has been created or built.
-- No recording compatibility tests have been performed.
+The user showed successful Gradle sync/build and successful installation/launch of the generated starter app on Medium Phone API 37.0 emulator. No clean CI build is verified. The OnePlus 10T physical device has not yet been used for compatibility tests.
 
-## 8. Next actions
+No Room, Navigation Compose, Media3, WorkManager, backend or AI dependencies are confirmed as added. Do not claim they are integrated.
 
-1. Review this documentation package.
-2. Create the Android Studio project and establish a reproducible build.
-3. Complete Phase 1 navigation, package structure and database foundation.
-4. Begin Phase 0/2 recording feasibility research and on-device tests before claiming call recording support.
-5. Maintain a device/source compatibility matrix.
-6. Only then plan AI/backend implementation details.
+## 6. Design research supplied
+
+User selected premium dark visual direction, violet accent and bottom navigation.
+
+Mobbin references/screenshots supplied:
+- Google Drive onboarding.
+- Spotify onboarding, library and playback.
+- Otter.ai onboarding.
+- Apple Music player/system-capture/player patterns.
+- Clubhouse voice-message hold/release/cancel interaction (not evidence of phone-call recording feasibility).
+- Transcript examples including voice-message transcription and transcript reading/highlighting.
+- AI summary examples including a YouTube “Ask about this video” flow.
+- Cloud backup examples including iCloud backup settings/history and encrypted backup education.
+- Privacy settings examples from multiple apps.
+
+Research is used for interaction patterns, not copying exact layouts/assets. Initial color values in design docs are proposed tokens, not individually approved brand specifications.
+
+## 7. Current implementation status
+
+### Verified complete
+- GitHub repository connected/access available to assistant.
+- Android project created in repository's `android/` folder.
+- Kotlin/Compose starter project generated.
+- Gradle sync/build succeeded in user's environment.
+- Starter app installed/launched on API 37 emulator.
+- Initial package folders created.
+- Mobbin design direction and reference screenshots supplied.
+- Home screen first-milestone scope defined.
+
+### Not implemented / not verified
+- Actual CallVault Home screen.
+- Five-destination working navigation.
+- Room database/entities/DAOs/migrations.
+- Import flow.
+- Playback engine.
+- Recording capability adapter.
+- SIM or VoIP audio capture.
+- Transcription/AI summaries.
+- Backend.
+- PostgreSQL migrations.
+- Encrypted cloud backup.
+- Lovable web dashboard.
+- OnePlus physical-device testing.
+- Google Play compliance review.
+
+## 8. Delivery order
+
+0. Discovery and recording feasibility.
+1. Android foundation and first UI.
+2. Import, library, playback and recording feasibility.
+3. Local security and library polish.
+4. Backend foundation.
+5. AI transcription and summaries.
+6. Encrypted backup and synchronization.
+7. Lovable companion web dashboard.
+8. Hardening and Google Play release.
+
+See `phases.md` for exit criteria.
 
 ## 9. Working rules for AI coding assistants
 
-- Read `memory.md`, `prd.md`, `phases.md`, `architecture.md` and `trd.md` before making architectural changes.
-- Treat these documents as the current baseline.
+- Read `README.md`, `memory.md`, `prd.md`, `architecture.md` and `trd.md` before architectural changes.
+- Read the relevant flow/design specification before implementing a screen.
+- Treat these documents as baseline, but do not convert unverified assumptions into facts.
 - Do not silently change user-approved technology choices.
 - Do not invent Android recording capabilities.
 - Do not implement unsupported permissions or policy workarounds.
 - Keep changes small and testable.
-- Update documentation when a decision changes.
-- Do not modify requirements documents just to make an incomplete implementation appear compliant.
-- Clearly report implemented, partially implemented, blocked and not implemented requirements.
-- Ask before making a major architecture or scope change.
+- Update docs when a decision or implementation status changes.
+- Report implemented, partially implemented, blocked and not implemented requirements separately.
+- Ask before major architecture/scope changes.
+- Distinguish source-derived facts, technical inference and proposed design.
+- A screenshot/mockup does not prove the feature is implemented.
 
 ## 10. Decision log
 
 | Date | Decision | Reason |
 |---|---|---|
 | 2026-11-25 | CallVault working name | Project identity |
-| 2026-11-25 | Android-first | User prioritizes working Android app |
-| 2026-11-25 | Hybrid architecture | Lovable for web UI; Kotlin for native Android; Spring Boot backend |
-| 2026-11-25 | OnePlus 10T / Android 15 | Initial device compatibility target |
+| 2026-11-25 | Android-first | User priority |
+| 2026-11-25 | Hybrid architecture | Native Android + Spring backend + Lovable web |
+| 2026-11-25 | OnePlus 10T / Android 15 | Primary physical compatibility target |
 | 2026-11-25 | Modular monolith backend | Avoid premature microservices |
-| 2026-11-25 | Local-first | Core library should work offline |
+| 2026-11-25 | Local-first | Core library works offline |
+| 2026-11-25 | Premium dark + violet + bottom navigation | User-approved visual direction |
+| 2026-11-25 | Home first | First UI implementation milestone |
+| 2026-11-25 | Documentation-first governance | Prevent architectural drift and unsupported claims |
