@@ -1,8 +1,8 @@
 # CallVault — Development Phases and Delivery Plan
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Status:** Baseline delivery plan; phase exit gates are mandatory  
-**Date:** 25 November 2026
+**Date:** 26 November 2026
 
 ## Delivery strategy
 
@@ -34,7 +34,7 @@ Android-first, with a strict feasibility gate for call-audio capture. Build the 
 - Implement design system and five-destination navigation.
 - Establish Room schema/migration approach.
 - Add test scaffolding and app settings foundation.
-- Implement Home screen using explicit demo fixtures during development only.
+- Implement Home screen using real local data where available.
 
 **Deliverables**
 - Android project and reproducible build.
@@ -52,7 +52,7 @@ Android-first, with a strict feasibility gate for call-audio capture. Build the 
 - Unit/instrumentation test baseline exists.
 - Documentation reflects actual code and test status.
 
-**Current status (26 November 2026): IN PROGRESS.** Project generated; initial build/sync succeeded; starter app launched on API 37 emulator. CV Design System 1.0 foundations and reusable Compose components have been implemented, and the user verified the design-system preview on the API 37 emulator with screenshots. The app entry point currently displays the design-system preview. The initial Home screen and five-destination navigation shell are now implemented and visually verified by user screenshot. The tabs beyond Home remain placeholders; import is explanatory only. Room foundation, automated test baseline and OnePlus physical-device verification remain outstanding.
+**Current status (26 November 2026): IN PROGRESS.** Project generated; builds and launches on API 37 emulator. CV Design System 1.0, Home screen and five-destination navigation shell are implemented and visually verified by user screenshots. Room recording entity/DAO/database, mapper and repository are implemented; user reported successful Gradle builds after these changes. The non-Home tabs remain placeholders. Automated test baseline and OnePlus physical-device validation remain outstanding.
 
 **Phase 1 progress breakdown**
 - [x] Kotlin/Compose starter project builds and launches on API 37 emulator.
@@ -60,11 +60,9 @@ Android-first, with a strict feasibility gate for call-audio capture. Build the 
 - [x] Reusable primary/secondary buttons, card, recording badge and empty state implemented.
 - [x] Design-system preview wired into `MainActivity` and visually checked on emulator.
 - [ ] Correct status-bar icon contrast and validate system-bar insets.
-- [x] Implement initial Home screen and five-destination Compose navigation shell (verified by user screenshot on API 37 emulator).
+- [x] Implement initial Home screen and five-destination Compose navigation shell.
 - [ ] Replace temporary text-glyph navigation icons with consistent Material icons and refine selected/unselected styling.
-- [ ] Connect Import Audio to Android Storage Access Framework.
-- [ ] Implement real library data and empty/loading/error states.
-- [ ] Establish Room schema/migration foundation.
+- [x] Establish Room recording entity, DAO, database, mapper and repository foundation.
 - [ ] Add unit/instrumentation test baseline.
 - [ ] Verify build and UI on OnePlus 10T / Android 15.
 
@@ -92,6 +90,21 @@ A screenshot-based visual check is not a substitute for automated tests or physi
 - Import provenance is preserved.
 - Recording status cannot be confused with call-state detection.
 - Each claimed capability is verified on a documented device/OS/source combination.
+
+**Current status (26 November 2026): IN PROGRESS.**
+- [x] SAF picker connected to Home's Import Audio action.
+- [x] Audio import manager copies supported MP3, M4A and WAV selections into app-private storage.
+- [x] Duration, file size, MIME type, title and import timestamp are represented in the recording model.
+- [x] Imported metadata is inserted through the Room repository.
+- [x] Home observes Room recordings and displays item count, total duration and recent imported items.
+- [x] User demonstrated successful import of `sample-3s` on Medium Phone API 37.0 emulator (1 item, 00:03, 51 KB).
+- [ ] Verify imported item remains after force-stop/relaunch.
+- [ ] Validate unsupported/corrupt/empty file handling and large-file behavior.
+- [ ] Implement Library list, search, sorting, rename and delete.
+- [ ] Implement audio playback and lifecycle/resource handling.
+- [ ] Add import/database/file-operation tests.
+- [ ] Verify on OnePlus 10T / Android 15.
+- [ ] Complete recording capability assessment; no SIM or third-party VoIP capture is currently verified.
 
 **Hard gate:** If cellular or third-party VoIP audio cannot be captured through a permitted mechanism, CallVault remains useful as a recording manager/importer and must not claim otherwise.
 
