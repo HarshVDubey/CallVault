@@ -52,7 +52,20 @@ Android-first, with a strict feasibility gate for call-audio capture. Build the 
 - Unit/instrumentation test baseline exists.
 - Documentation reflects actual code and test status.
 
-**Current status:** Project generated, initial build/sync succeeded, starter app launched on API 37 emulator, package folders created. Feature UI, Room and OnePlus physical-device verification remain outstanding.
+**Current status (26 November 2026): IN PROGRESS.** Project generated; initial build/sync succeeded; starter app launched on API 37 emulator. CV Design System 1.0 foundations and reusable Compose components have been implemented, and the user verified the design-system preview on the API 37 emulator with screenshots. The app entry point currently displays the design-system preview. The actual Home screen, five-destination navigation, Room foundation, test baseline and OnePlus physical-device verification remain outstanding.
+
+**Phase 1 progress breakdown**
+- [x] Kotlin/Compose starter project builds and launches on API 37 emulator.
+- [x] Initial CV color, typography, shape and Material 3 theme foundation implemented.
+- [x] Reusable primary/secondary buttons, card, recording badge and empty state implemented.
+- [x] Design-system preview wired into `MainActivity` and visually checked on emulator.
+- [ ] Correct status-bar icon contrast and validate system-bar insets.
+- [ ] Implement actual Home screen and five-destination navigation.
+- [ ] Establish Room schema/migration foundation.
+- [ ] Add unit/instrumentation test baseline.
+- [ ] Verify build and UI on OnePlus 10T / Android 15.
+
+A screenshot-based visual check is not a substitute for automated tests or physical-device validation.
 
 ## Phase 2 — Audio import, library and playback; recording feasibility
 
