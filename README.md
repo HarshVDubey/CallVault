@@ -83,8 +83,11 @@ Verified from the user's Android Studio screenshots and supplied build files:
 - Initial package folders were created for core design system, data, domain and features.
 - CV Design System 1.0 foundations are implemented in the Android app: semantic color palette, dark/light Material 3 schemes, typography, shapes, reusable buttons, card, recording badge and empty state.
 - `CVDesignSystemPreview` is wired into `MainActivity` and was launched successfully in the API 37 emulator; the user supplied a screenshot showing the dark preview.
-- The current app entry point is the design-system preview, not the actual CallVault Home screen.
-- Five-destination navigation, actual Home screen and functional recording/library features are not implemented.
+- Actual CallVault Home screen implemented in `feature/home/HomeScreen.kt` and launched from `MainActivity`.
+- Five-destination bottom navigation is implemented using Compose state; Library, Insights, Backup and Settings currently show placeholder destinations.
+- Home import and compatibility actions currently show explanatory dialogs; Android file picker and capability assessment are not yet connected.
+- The user supplied an API 37 emulator screenshot confirming the Home layout and five-tab navigation render.
+- Functional audio import, local library, recording and playback remain unimplemented.
 - OnePlus 10T physical-device testing is pending.
 
 See `memory.md` for the detailed verified baseline and outstanding work.
