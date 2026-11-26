@@ -40,5 +40,5 @@
 - Connected Home's Import Audio action to Android SAF `OpenDocument`; file import and Room insertion execute on `Dispatchers.IO`.
 - Home now observes Room recordings and shows live item count, total duration and recent imported items.
 - User reported successful builds during integration and supplied an API 37 emulator screenshot showing `sample-3s` imported successfully (1 item, 00:03, 51 KB).
-- Import flow is demonstrated; force-stop/relaunch persistence, playback, dedicated Library management, tests and OnePlus 10T validation remain outstanding.
+- User subsequently confirmed the imported recording remained after force-stop/relaunch on API 37 emulator; restart persistence is now verified for the demonstrated flow. Playback, dedicated Library management, tests and OnePlus 10T validation remain outstanding.
 - No SIM or third-party VoIP call-audio capture capability is claimed or implemented.
