@@ -138,7 +138,7 @@ Research is used for interaction patterns, not copying exact layouts/assets. Ini
 ### Verified behavior boundaries
 - The screenshot demonstrates one successful import on Medium Phone API 37.0 emulator.
 - The imported item appears in the live Home UI after the picker flow.
-- Persistence after force-stop/relaunch has not yet been reported or verified.
+- User confirmed the imported recording remained visible after force-stopping/restarting the app on the API 37 emulator; this verifies the demonstrated Room metadata and app-private file persistence path across that restart.
 - Supported extension validation currently allows MP3, M4A and WAV only; the picker may display other audio types, which should produce an unsupported-format message.
 - Import metadata is persisted via Room; actual playback has not been implemented.
 - The app-private copied audio is not encrypted at rest yet.
