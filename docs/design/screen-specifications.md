@@ -65,7 +65,7 @@ Implemented in `android/app/src/main/java/dev/callvault/app/feature/home/HomeScr
 - Privacy-first information card.
 - Five-destination bottom navigation shell in `MainActivity.kt`.
 
-Evidence: user supplied an API 37 emulator screenshot showing successful import of `sample-3s`; Home displayed 1 audio item, total duration 00:03, and the item as 00:03 / 51 KB. User also reported successful Gradle builds during Room/repository integration. Force-stop/relaunch persistence and physical-device behavior remain unverified.
+Evidence: user supplied an API 37 emulator screenshot showing successful import of `sample-3s`; Home displayed 1 audio item, total duration 00:03, and the item as 00:03 / 51 KB. User also reported successful Gradle builds during Room/repository integration. User confirmed force-stop/relaunch persistence on the API 37 emulator; physical-device behavior remains unverified.
 
 Implementation note: repository/database creation currently occurs in the composable as a temporary manual-wiring approach. Refactor into a ViewModel/presentation layer before adding more Home behavior.
 
