@@ -134,3 +134,15 @@ Do not invent speakers, commitments, dates or facts absent from source. Preserve
 - AI upload cannot start without explicit confirmation.
 - Backup cannot be shown as complete before server confirmation.
 - Local and cloud delete statuses remain distinguishable.
+
+## 12. Visual interaction treatment — approved design direction
+
+The approved visual identity is Modern Colorful: blue/indigo/violet/magenta gradients, selective translucent glass-like surfaces and expressive audio visuals.
+
+- Primary actions may use a vivid gradient treatment; secondary actions should remain quieter and clearly distinguishable.
+- Glass panels must preserve readable text, clear boundaries and accessible contrast.
+- Selected navigation and active controls may use violet/cyan accents, but state must also have a label/icon/shape cue.
+- Home and Player may use more expressive transitions and artwork; Library, Backup and Settings should favor restrained motion and scanability.
+- Loading, upload, transcription and playback indicators must reflect real subsystem state. Never animate a fake waveform to imply audio capture or playback.
+- Respect reduced-motion settings and avoid expensive continuous blur/animation.
+- Artwork is decorative unless explicitly linked to a recording; provenance and metadata remain visible.
