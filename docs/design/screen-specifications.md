@@ -1,12 +1,13 @@
 # CallVault — Screen Specifications
 
-**Version:** 1.1  
-**Status:** Home screen and first SAF import path implemented and visually checked on API 37 emulator; other screens remain specification-only.
+**Version:** 1.2  
+**Status:** Modern Colorful blue-violet visual direction approved 26 November 2026; current Home/import implementation still uses the earlier UI and requires redesign. Other screens remain specification-only.
 
 ## 1. Shared screen rules
 
-- Premium dark visual direction with violet accent.
+- Modern Colorful visual direction: electric blue/indigo/violet/magenta gradients, selective glassmorphism and expressive audio visuals.
 - Material 3 and Jetpack Compose.
+- Preserve contrast, legibility and accessibility; use calmer surfaces for data-heavy screens.
 - Primary navigation: Home, Library, Insights, Backup, Settings.
 - Show provenance and status explicitly.
 - Include empty/loading/error/offline/unsupported states where applicable.
@@ -206,3 +207,46 @@ Do not request all permissions on first launch. Onboarding must not promise univ
 - Real data drives status/progress.
 - No demo data in production.
 - Build and UI tests pass before marking implemented.
+
+## 11. Visual redesign targets — approved direction, not implemented
+
+### Home — Expressive audio dashboard
+- Blue/indigo gradient hero region with CallVault identity and greeting.
+- Prominent Import Audio action.
+- Compact library statistics and recent recording cards.
+- Recent items show title, duration, date and provenance.
+- AI insights preview only when actual generated results exist.
+- Use expressive abstract audio artwork sparingly; no fake recording state.
+
+### Library — Organized recording collection
+- Search and category/filter controls at the top.
+- Calm blue-violet surfaces with selective artwork tiles.
+- Group recordings by date where useful.
+- Clear Imported/Verified/Unverified/Unsupported provenance labels.
+- Sort, selection and destructive actions must have explicit states.
+
+### Full Player — Immersive listening
+- Deep blue-violet gradient background and large artwork/visualization region.
+- Recording title, source, date and duration.
+- Actual seek/progress and prominent play/pause controls.
+- Waveform only when generated from real audio data.
+- Transcript, bookmarks and summary entry points when those features exist.
+- No artist/track metadata copied from music-app references.
+
+### Insights — Conversation intelligence
+- Structured summary, key points, decisions and action items.
+- Transcript sections linked to source recording.
+- AI-generated label and processing status.
+- Use gradient accents for hierarchy, not as a substitute for information.
+
+### Backup — Secure archive status
+- Clear backup enabled/disabled state, last successful backup, queue and failure recovery.
+- Encryption/key-recovery explanation.
+- Restrained gradient panels; status must be textually explicit.
+
+### Settings — Functional control centre
+- Grouped settings with clear descriptions and toggles.
+- Minimal decorative treatment.
+- Maintain shared palette and component styling without sacrificing density or readability.
+
+These specifications define the target visual language. They do not indicate that these screens or features are implemented.
