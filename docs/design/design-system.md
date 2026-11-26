@@ -1,20 +1,47 @@
-# CV Design System 1.0
+# CallVault Visual Design System 2.0
 
-**Status:** Foundation implemented and visually checked in the API 37 emulator; tokens remain subject to accessibility and physical-device validation.  
+**Status:** New visual direction approved by user on 26 November 2026; detailed tokens are proposed and implementation is pending.  
 **Platform:** Android / Jetpack Compose / Material 3  
-**Direction:** Premium dark, violet accent, bottom navigation.
+**Direction:** Modern colorful audio interface; electric blue, indigo, violet and magenta gradients; selective glassmorphism; immersive audio player.
 
-## 1. Approved direction
+## 1. Approved visual direction — Modern Colorful
 
-- Premium visual style.
-- Dark theme as initial default.
-- Violet accent.
-- Five-item bottom navigation.
-- Calm, trustworthy, privacy-conscious visual language.
+The user selected a supplied reference featuring a vivid blue-violet audio interface with gradient surfaces, translucent layered cards, expressive audio artwork and an immersive player. This replaces the previous premium dark/violet-only direction as the current design baseline.
 
-The user approved the direction. Individual hex values, font choice and dimensions below are initial design tokens and require visual validation on device.
+- Rich electric blue, indigo, violet and magenta color atmosphere.
+- Gradient backgrounds and selective translucent/glass-like surfaces.
+- Bright, expressive audio artwork and waveform visualizations.
+- Large, immersive playback controls and clear audio metadata.
+- Five-item bottom navigation: Home, Library, Insights, Backup, Settings.
+- Premium, polished, energetic and approachable personality.
 
-## 2. Color tokens (proposed)
+The reference is inspiration, not an instruction to copy SoundWave branding, protected assets, exact layouts or music-specific content. CallVault remains an audio recording/library and conversation assistant.
+
+## 2. Proposed color tokens — subject to design validation
+
+| Token | Hex | Semantic use |
+|---|---|---|
+| Deep navy | #101A3A | Base/deep background |
+| Electric blue | #315BCE | Primary gradient anchor |
+| Indigo | #4D4FE0 | Gradient and selected surfaces |
+| Violet | #8655E8 | Primary accent |
+| Magenta | #D94BC2 | Gradient highlight |
+| Cyan | #49D7E8 | Audio/waveform highlight |
+| Cloud white | #F7F8FF | Primary text on dark surfaces |
+| Muted lavender | #C2C8E8 | Secondary text |
+| Glass surface | #FFFFFF at 10–14% opacity | Select translucent panels |
+| Glass border | #FFFFFF at 18–24% opacity | Subtle card outlines |
+| Success | #39D9A5 | Success state |
+| Warning | #FFC46B | Warning state |
+| Error | #FF718B | Error state |
+
+These values are starting proposals, not individually user-approved production tokens. Verify gradient combinations, contrast and translucency on actual devices. Status must never be communicated by color alone.
+
+## 3. Legacy implementation note
+
+The existing Android project currently contains the earlier dark/violet Material 3 palette and theme foundation. That implementation remains the current code state until redesigned and validated; this document describes the newly approved target direction. Do not claim the new palette or glass effects are implemented.
+
+## 4. Typography (proposed)
 
 | Token | Hex | Semantic use |
 |---|---|---|
@@ -32,7 +59,7 @@ The user approved the direction. Individual hex values, font choice and dimensio
 
 Violet is an interaction accent, not a blanket background color. Never communicate state by color alone.
 
-## 3. Typography (proposed)
+## 4. Typography (proposed)
 
 Use a legible platform sans-serif. Inter is optional and should only be added if its licensing, packaging and visual value are confirmed.
 
@@ -112,3 +139,30 @@ Still pending: status-bar icon contrast/system-bar insets, font scaling, TalkBac
 - Check selected/unselected navigation states.
 - Check empty/error/unsupported states.
 - Check that demo fixtures are not present in production.
+
+## 12. Gradient, glass and artwork rules
+
+- Use gradients as composed backgrounds, hero panels and selected feature surfaces; avoid applying a loud gradient to every card.
+- Glass-like surfaces should use restrained translucency, a subtle light border and sufficient contrast. Never place essential text over a busy image without a readable overlay.
+- Prefer real recording artwork when supplied by the user or available through a legitimate source. Otherwise use generated abstract audio artwork or a waveform visualization; do not imply decorative art is a real waveform.
+- Waveforms must represent actual audio samples when presented as data. A decorative sound motif must be visually distinguishable from measured waveform data.
+- Keep functional screens such as Settings and Backup calmer than Home and Player while retaining the shared blue-violet identity.
+- Avoid excessive blur, low-contrast glass text, visual clutter and motion that harms battery or accessibility.
+
+## 13. Target screen personality
+
+- Home: expressive hero area, quick import action, compact library metrics and recent recordings.
+- Library: organized, searchable and calmer; artwork/visual markers support scanning.
+- Player: immersive hero artwork, real playback timeline/waveform, prominent controls and recording metadata.
+- Insights: structured AI summaries, transcript sections and source links.
+- Backup: clear status, progress, encryption and recovery information; restrained gradients.
+- Settings: clean grouped preferences with minimal decoration.
+
+## 14. Validation checklist
+
+- Test gradient and text contrast in dark and light environments.
+- Test glass surfaces with accessibility text scaling and TalkBack.
+- Verify performance on OnePlus 10T / Android 15 and supported emulator sizes.
+- Respect reduced-motion settings.
+- Confirm artwork and waveform visuals never misrepresent recording provenance or actual audio data.
+- Review status-bar/navigation-bar contrast and edge-to-edge insets.
