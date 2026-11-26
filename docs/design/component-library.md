@@ -104,3 +104,18 @@ Package: `dev.callvault.app.core.designsystem.components`.
 All other components in the inventory, including CVScaffold, CVTopBar, CVIconButton, status/error/loading states, audio/player components, AI components and backup/privacy components.
 
 The current implementations are presentation components. They do not record audio, play media, access repositories or perform backup/transcription. Automated component tests and accessibility validation remain pending.
+
+## 9. Visual styling target — Modern Colorful
+
+The approved target style uses electric-blue/indigo/violet/magenta gradients, cyan audio accents and selective glassmorphism. This is a styling direction for the component inventory, not a statement that components have been redesigned.
+
+- CVScaffold: support a controlled gradient/background layer while preserving system insets and readable content.
+- CVCard: provide standard solid, elevated and translucent/glass variants; default to readable solid surfaces on dense screens.
+- CVPrimaryButton: support a branded gradient treatment with accessible contrast and clear disabled/loading states.
+- CVStatusBadge: use semantic status colors with text/icon; never rely on hue alone.
+- RecordingItemCard: support optional recording artwork/abstract visual, but keep title, duration and provenance prominent.
+- WaveformView: distinguish actual data waveform from decorative audio artwork; only actual waveform data may be presented as measured playback visualization.
+- FullPlayerControls: use an immersive blue-violet treatment while keeping controls large and legible.
+- Settings/Backup components: use calmer surfaces and restrained gradient accents.
+
+Existing Compose components still reflect the earlier theme. Apply the new visual treatment only as part of the planned redesign and validate it in previews and on device.
