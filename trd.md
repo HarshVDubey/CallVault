@@ -122,7 +122,7 @@ Known gaps:
 - Extension validation is not equivalent to validating file content; add content/format validation.
 - Current accepted extension set is intentionally narrower than the candidate list below.
 - Size limits, large-file behavior, interrupted copy and corrupt-file tests are not complete.
-- Restart persistence has not yet been verified by the user.
+- User confirmed the imported item remained after force-stop/relaunch on the API 37 emulator; this is a user-reported local verification, not CI or physical-device evidence.
 - Playback is not implemented.
 - Local audio encryption at rest is not implemented.
 
