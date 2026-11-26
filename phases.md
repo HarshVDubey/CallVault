@@ -98,7 +98,7 @@ A screenshot-based visual check is not a substitute for automated tests or physi
 - [x] Imported metadata is inserted through the Room repository.
 - [x] Home observes Room recordings and displays item count, total duration and recent imported items.
 - [x] User demonstrated successful import of `sample-3s` on Medium Phone API 37.0 emulator (1 item, 00:03, 51 KB).
-- [ ] Verify imported item remains after force-stop/relaunch.
+- [x] User confirmed imported item remains after force-stop/relaunch on API 37 emulator.
 - [ ] Validate unsupported/corrupt/empty file handling and large-file behavior.
 - [ ] Implement Library list, search, sorting, rename and delete.
 - [ ] Implement audio playback and lifecycle/resource handling.
