@@ -42,3 +42,13 @@
 - User reported successful builds during integration and supplied an API 37 emulator screenshot showing `sample-3s` imported successfully (1 item, 00:03, 51 KB).
 - User subsequently confirmed the imported recording remained after force-stop/relaunch on API 37 emulator; restart persistence is now verified for the demonstrated flow. Playback, dedicated Library management, tests and OnePlus 10T validation remain outstanding.
 - No SIM or third-party VoIP call-audio capture capability is claimed or implemented.
+
+## 2026-11-26 — Modern Colorful visual direction approved
+
+- User selected a new visual direction based on supplied audio-app references: vivid electric-blue/indigo/violet/magenta gradients, selective glassmorphism, expressive audio visuals and an immersive player.
+- Superseded the previous premium dark/violet-only visual direction as the active target.
+- Updated UI/UX brief, design system, screen specifications, component library and interaction patterns with the new visual baseline.
+- Updated README and project memory/decision log to identify the new direction and affected documents.
+- Clarified that Home and Player may be more expressive while Library, Backup and Settings should remain calmer and information-focused.
+- Existing Android Compose implementation still uses the earlier dark/violet theme; no UI redesign or code implementation is claimed by this documentation change.
+- Technical architecture, recording feasibility constraints and implemented import/persistence status remain unchanged.
