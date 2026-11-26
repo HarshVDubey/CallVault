@@ -2,7 +2,7 @@
 
 **Purpose:** Durable handoff file for ChatGPT, coding assistants and contributors.  
 **Last updated:** 26 November 2026  
-**Memory version:** 1.2
+**Memory version:** 1.3
 
 ## 1. Project identity
 
@@ -34,9 +34,8 @@
 | Call types | Cellular SIM and internet/VoIP both desired, subject to feasibility | User preference |
 | Recording modes | Manual and automatic both desired, subject to feasibility/policy | User preference |
 | Product features | Playback, search, transcription, summaries, backup | User-selected scope |
-| Design style | Premium | Confirmed |
-| Theme | Dark | Confirmed direction |
-| Accent | Violet | Confirmed |
+| Design style | Modern Colorful premium audio interface | User-approved 26 Nov 2026 |
+| Visual treatment | Blue/indigo/violet/magenta gradients with selective glassmorphism | Approved direction; exact tokens proposed |
 | Primary navigation | Bottom navigation | Confirmed |
 | Main destinations | Home, Library, Insights, Backup, Settings | Confirmed visual/navigation naming |
 
@@ -97,7 +96,7 @@ The user reported successful builds after Room setup, DAO cleanup methods, repos
 
 ## 6. Design research supplied
 
-User selected premium dark visual direction, violet accent and bottom navigation.
+User initially selected premium dark/violet styling, then on 26 November 2026 explicitly replaced that direction with a Modern Colorful visual identity based on supplied audio-app references: electric blue, indigo, violet and magenta gradients, selective glassmorphism, expressive artwork and an immersive player. This latest decision is the active visual baseline.
 
 Mobbin references/screenshots supplied:
 - Google Drive onboarding.
@@ -217,3 +216,15 @@ See `phases.md` for exit criteria.
 | 2026-11-26 | Room-backed local recording metadata | Persist imported audio metadata separately from private audio files |
 | 2026-11-26 | SAF-based audio import | User-mediated file selection without broad storage permission |
 | 2026-11-26 | First emulator import demonstrated | `sample-3s` appeared in Home with duration and file size |\n| 2026-11-26 | Import persistence verified across restart | User confirmed imported item remained after force-stop/relaunch on API 37 emulator |
+
+## 11. Latest design decision — 26 November 2026
+
+**Decision:** Modern Colorful visual direction approved.
+
+**Reference interpretation:** Blue/indigo gradient foundations, violet and magenta highlights, cyan audio accents, layered translucent surfaces, expressive audio artwork and an immersive full player. The reference is a visual inspiration source only; do not copy SoundWave branding, protected assets or exact layouts.
+
+**Screen personality:** Home and Player can be expressive; Library should remain organized and searchable; Insights should emphasize structured AI output and source linkage; Backup and Settings should use calmer, more functional surfaces.
+
+**Status boundary:** The current Android implementation still uses the earlier dark/violet theme. The new visual direction is approved for design and documentation, not yet implemented in Kotlin/Compose. Existing architecture, import flow and recording feasibility constraints are unchanged.
+
+**Affected documents:** README, ui-ux-design-brief, docs/design/design-system, docs/design/screen-specifications, docs/design/component-library, docs/design/interaction-patterns, phases and CHANGELOG.
