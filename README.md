@@ -5,7 +5,7 @@
 **Product direction:** Android-first hybrid  
 **Primary compatibility device:** OnePlus 10T 5G, Android 15  
 **Documentation baseline:** 26 November 2026  
-**Documentation version:** 1.2  
+**Documentation version:** 1.3  
 **Project status:** Android UI, Room persistence foundation and first audio-import flow implemented; playback and recording feasibility remain outstanding.
 
 ## Product statement
@@ -120,3 +120,9 @@ See `memory.md` and `phases.md` for evidence and outstanding acceptance checks.
 - Keep visual inspiration separate from copied assets or protected layouts.
 - Record actual build output and device tests; do not claim tests that were not run.
 - A successful import and restart check demonstrate the flow on the API 37 emulator, not playback, physical-device compatibility or call recording.
+
+## Current visual design baseline — 26 November 2026
+
+The user-approved target direction is **Modern Colorful**: electric blue/indigo/violet/magenta gradients, selective glassmorphism, expressive audio visuals and an immersive player. Home and Player may be visually expressive; Library, Backup and Settings should use calmer, more functional surfaces. This replaces the earlier dark/violet-only visual direction.
+
+This is a design decision only. The current Compose implementation still uses the earlier theme and has not yet been visually redesigned. See `ui-ux-design-brief.md` and `docs/design/` for target specifications. Do not treat reference screenshots or proposed tokens as implemented functionality.
