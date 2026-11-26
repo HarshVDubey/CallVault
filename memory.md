@@ -145,7 +145,7 @@ Research is used for interaction patterns, not copying exact layouts/assets. Ini
 - The UI currently creates repository/database access directly in the composable as an initial integration shortcut. Refactor into a ViewModel/presentation layer before expanding feature complexity.
 
 ### Not implemented / not verified
-- Force-stop/relaunch persistence verification.
+
 - Full Library screen, search, sorting, rename and delete interactions.
 - Playback engine and player UI.
 - Import size limits, content sniffing and broader corruption/large-file tests.
