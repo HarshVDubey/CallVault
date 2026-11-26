@@ -159,7 +159,7 @@ Research is used for interaction patterns, not copying exact layouts/assets. Ini
 
 ### Current phase status — 26 November 2026
 - **Phase 1 — Android foundation and first UI: IN PROGRESS.** Design system, Home/navigation shell, Room foundation and build baseline are present; automated tests and physical-device validation remain.
-- **Phase 2 — Import, library and playback: IN PROGRESS.** First SAF import path and Room metadata insertion are demonstrated on emulator; persistence after restart, Library management and playback remain.
+- **Phase 2 — Import, library and playback: IN PROGRESS.** SAF import, Room metadata insertion and persistence across app restart are demonstrated on API 37 emulator; Library management and playback remain.
 
 ### Important implementation paths
 - `android/app/src/main/java/dev/callvault/app/feature/home/HomeScreen.kt`
@@ -216,4 +216,4 @@ See `phases.md` for exit criteria.
 | 2026-11-25 | Documentation-first governance | Prevent architectural drift and unsupported claims |
 | 2026-11-26 | Room-backed local recording metadata | Persist imported audio metadata separately from private audio files |
 | 2026-11-26 | SAF-based audio import | User-mediated file selection without broad storage permission |
-| 2026-11-26 | First emulator import demonstrated | `sample-3s` appeared in Home with duration and file size; restart persistence still to verify |
+| 2026-11-26 | First emulator import demonstrated | `sample-3s` appeared in Home with duration and file size |\n| 2026-11-26 | Import persistence verified across restart | User confirmed imported item remained after force-stop/relaunch on API 37 emulator |
