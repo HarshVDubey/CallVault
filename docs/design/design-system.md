@@ -43,24 +43,6 @@ The existing Android project currently contains the earlier dark/violet Material
 
 ## 4. Typography (proposed)
 
-| Token | Hex | Semantic use |
-|---|---|---|
-| background | #0B0A10 | App background |
-| surface | #13111B | Main cards/sections |
-| surfaceElevated | #1C1926 | Dialogs and sheets |
-| primary | #8B5CF6 | Primary actions/selection |
-| primaryLight | #A78BFA | Highlights |
-| onBackground | #F8F7FC | Main text |
-| onSurfaceVariant | #A5A0B3 | Secondary text |
-| outline | #302B3A | Borders/dividers |
-| success | #34D399 | Success |
-| warning | #FBBF24 | Warning |
-| error | #F87171 | Error |
-
-Violet is an interaction accent, not a blanket background color. Never communicate state by color alone.
-
-## 4. Typography (proposed)
-
 Use a legible platform sans-serif. Inter is optional and should only be added if its licensing, packaging and visual value are confirmed.
 
 - Display/page title: 26–30sp, semibold.
@@ -71,7 +53,7 @@ Use a legible platform sans-serif. Inter is optional and should only be added if
 
 Respect Android font scaling and avoid fixed-height text containers that clip enlarged text.
 
-## 4. Spacing and shapes (proposed)
+## 5. Spacing and shapes (proposed)
 
 Use a 4dp base scale:
 - 4dp: tight icon/text gap.
@@ -83,23 +65,23 @@ Use a 4dp base scale:
 
 Validate values against actual screen density and Material 3 component conventions. Touch targets must be comfortable.
 
-## 5. Elevation and borders
+## 6. Elevation and borders
 
 - Prefer surface tonal hierarchy over heavy shadows.
 - Use subtle outline/border for grouping.
 - Do not wrap every text block in a card.
 - Sheets/dialogs use elevated surface.
-- Avoid excessive glassmorphism and gradients.
+- Use glassmorphism and gradients selectively; preserve readable solid surfaces for dense content.
 
-## 6. Iconography
+## 7. Iconography
 
 Use a consistent Material Symbols/Material icon family. Icon-only controls require content descriptions. Use text labels for important source and processing states.
 
-## 7. Navigation
+## 8. Navigation
 
 Primary destinations: Home, Library, Insights, Backup, Settings. Use Material 3 NavigationBar on compact layouts. Consider adaptive navigation rail for larger screens after testing.
 
-## 8. State semantics
+## 9. State semantics
 
 - Success: text/icon plus color.
 - Warning: text/icon plus color.
@@ -109,7 +91,7 @@ Primary destinations: Home, Library, Insights, Backup, Settings. Use Material 3 
 - Playback active: only when media engine reports active playback.
 - Backup/transcription progress: driven by real task state, never decorative animation.
 
-## 9. Accessibility
+## 10. Accessibility
 
 - TalkBack semantics/content descriptions.
 - Scalable text.
@@ -118,7 +100,7 @@ Primary destinations: Home, Library, Insights, Backup, Settings. Use Material 3 
 - Do not rely on color alone.
 - Respect system reduced-motion settings.
 
-## 10. Implementation status — 26 November 2026
+## 11. Implementation status — 26 November 2026
 
 Implemented in the Android project:
 - `Color.kt`: CV semantic palette including dark surfaces, violet primary, text, outlines and status colors.
@@ -131,7 +113,7 @@ The user ran the preview on the Medium Phone API 37.0 emulator and supplied scre
 
 Still pending: status-bar icon contrast/system-bar insets, font scaling, TalkBack checks, light theme review, narrow-screen review and OnePlus 10T validation.
 
-## 11. Validation checklist
+## 12. Validation checklist
 
 - Verify tokens on OnePlus 10T and emulator.
 - Check light-on-dark contrast.
@@ -140,7 +122,7 @@ Still pending: status-bar icon contrast/system-bar insets, font scaling, TalkBac
 - Check empty/error/unsupported states.
 - Check that demo fixtures are not present in production.
 
-## 12. Gradient, glass and artwork rules
+## 13. Gradient, glass and artwork rules
 
 - Use gradients as composed backgrounds, hero panels and selected feature surfaces; avoid applying a loud gradient to every card.
 - Glass-like surfaces should use restrained translucency, a subtle light border and sufficient contrast. Never place essential text over a busy image without a readable overlay.
@@ -149,7 +131,7 @@ Still pending: status-bar icon contrast/system-bar insets, font scaling, TalkBac
 - Keep functional screens such as Settings and Backup calmer than Home and Player while retaining the shared blue-violet identity.
 - Avoid excessive blur, low-contrast glass text, visual clutter and motion that harms battery or accessibility.
 
-## 13. Target screen personality
+## 14. Target screen personality
 
 - Home: expressive hero area, quick import action, compact library metrics and recent recordings.
 - Library: organized, searchable and calmer; artwork/visual markers support scanning.
@@ -158,7 +140,7 @@ Still pending: status-bar icon contrast/system-bar insets, font scaling, TalkBac
 - Backup: clear status, progress, encryption and recovery information; restrained gradients.
 - Settings: clean grouped preferences with minimal decoration.
 
-## 14. Validation checklist
+## 15. Validation checklist
 
 - Test gradient and text contrast in dark and light environments.
 - Test glass surfaces with accessibility text scaling and TalkBack.
