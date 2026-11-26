@@ -87,7 +87,7 @@ Verified from user-provided project files, successful build reports and emulator
 - Recording compatibility UI remains informational and correctly does not claim call-audio capture.
 
 Not yet verified:
-- Persistence after force-stop/restart (the user has not yet reported this test).
+- Playback, search, sort, rename, delete UI and Library destination.
 - Playback, search, sort, rename, delete UI and Library destination.
 - OnePlus 10T physical-device behavior.
 - Automated unit/instrumentation tests and clean CI build.
@@ -97,7 +97,7 @@ Not yet verified:
 ## Current delivery phase (26 November 2026)
 
 - **Phase 1 — Android foundation and first UI: IN PROGRESS.** Design system, Home, navigation shell, Room foundation and first import flow are implemented; test baseline and physical-device verification remain.
-- **Phase 2 — Audio import, library and playback: IN PROGRESS.** Basic SAF import and Room metadata insertion are demonstrated on API 37 emulator. Library management and playback are not implemented.
+- **Phase 2 — Audio import, library and playback: IN PROGRESS.** SAF import, Room metadata insertion and persistence after force-stop/relaunch are user-verified on API 37 emulator. Library management and playback are not implemented.
 
 See `memory.md` and `phases.md` for evidence and outstanding acceptance checks.
 
@@ -119,4 +119,4 @@ See `memory.md` and `phases.md` for evidence and outstanding acceptance checks.
 - Keep proposed backend schema separate from implemented database migrations.
 - Keep visual inspiration separate from copied assets or protected layouts.
 - Record actual build output and device tests; do not claim tests that were not run.
-- A successful import screenshot proves the demonstrated flow on the emulator, not restart durability, playback, physical-device compatibility or call recording.
+- A successful import and restart check demonstrate the flow on the API 37 emulator, not playback, physical-device compatibility or call recording.
