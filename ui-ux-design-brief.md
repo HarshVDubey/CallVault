@@ -1,8 +1,8 @@
 # CallVault — UI/UX Design Brief
 
-**Version:** 1.0  
-**Status:** Approved visual direction; detailed tokens are initial proposals  
-**Date:** 25 November 2026
+**Version:** 2.0  
+**Status:** Modern Colorful visual direction approved; detailed tokens and screen designs remain proposed pending review  
+**Date:** 26 November 2026
 
 ## 1. Design objective
 
@@ -12,17 +12,17 @@ The interface must make provenance and capability status obvious. A user must be
 
 ## 2. Confirmed user design decisions
 
-| Decision | Selection |
-|---|---|
-| Overall style | Premium |
-| Theme direction | Dark |
-| Accent | Violet |
-| Primary navigation | Bottom navigation |
-| Main destinations | Home, Library, Insights, Backup, Settings |
-| Native UI | Jetpack Compose + Material 3 |
-| Design research | Mobbin references supplied by user |
+| Decision | Selection | Status |
+|---|---|---|
+| Overall style | Modern colorful, premium audio interface | Approved 26 Nov 2026 |
+| Visual treatment | Blue-violet gradients and selective glassmorphism | Approved direction; details proposed |
+| Color family | Electric blue, indigo, violet, magenta, cyan | Proposed palette within approved direction |
+| Primary navigation | Bottom navigation | Confirmed |
+| Main destinations | Home, Library, Insights, Backup, Settings | Confirmed |
+| Native UI | Jetpack Compose + Material 3 | Confirmed |
+| Design references | User-supplied colorful music/audio UI screenshots | Approved inspiration, not assets to copy |
 
-The dark/violet token values are proposed starting values; the user approved the direction, not every individual hex value.
+The latest colorful blue-violet reference supersedes the earlier dark/violet-only visual direction. Individual hex values, gradient stops, typography, radii and opacity values remain proposed until reviewed.
 
 ## 3. Brand personality
 
@@ -33,7 +33,7 @@ The dark/violet token values are proposed starting values; the user approved the
 - Privacy-conscious.
 - Technically capable without looking intimidating.
 
-Avoid spyware visual language, hidden microphone motifs, aggressive recording animations, misleading “record every call” claims, excessive gradients/glass effects and decorative charts without meaning.
+Avoid spyware visual language, hidden microphone motifs, aggressive recording animations and misleading “record every call” claims. Gradients and glass effects are now part of the approved direction but must be selective, readable and purposeful. Avoid decorative charts without meaning.
 
 ## 4. Mobbin research supplied
 
@@ -68,40 +68,38 @@ These are pattern references, not permission to copy exact screen layouts, brand
 
 ## 5. Visual system
 
-### Initial proposed color tokens
+### Visual direction
 
-| Token | Hex | Usage |
-|---|---|---|
-| Background | #0B0A10 | Main screen |
-| Surface | #13111B | Cards and sections |
-| Elevated surface | #1C1926 | Dialogs/sheets |
-| Primary | #8B5CF6 | Primary actions and selected states |
-| Primary light | #A78BFA | Highlights |
-| Text primary | #F8F7FC | Main text |
-| Text secondary | #A5A0B3 | Supporting text |
-| Border | #302B3A | Dividers/outlines |
-| Success | #34D399 | Successful state |
-| Warning | #FBBF24 | Warning |
-| Error | #F87171 | Error |
+Use the user's selected modern colorful reference as the visual anchor: vivid electric-blue and indigo foundations, violet/magenta highlights, cyan audio accents, expressive artwork, gradient surfaces and restrained glassmorphism.
 
-Use semantic tokens rather than scattered hard-coded colors. Violet should communicate interaction and selection, not cover every surface.
+### Proposed color family
+
+- Deep navy for grounding and readable contrast.
+- Electric blue and indigo for large gradient surfaces.
+- Violet and magenta for visual energy and selected elements.
+- Cyan for audio-related highlights and waveform accents.
+- Cloud white and muted lavender for text.
+- Green, amber and coral for semantic status only.
+
+Exact hex values and gradient stops are documented in `docs/design/design-system.md` as proposals pending validation.
 
 ### Typography proposal
-- Platform-friendly sans-serif; Inter may be evaluated but is not a mandatory dependency.
-- Screen titles: approximately 26–30sp, semibold.
-- Section headings: approximately 18–20sp, semibold.
-- Body: 14–16sp.
-- Supporting text: 12–13sp, while preserving accessibility.
-- Tabular numerals for durations, timestamps and storage.
 
-### Spacing and shape proposal
-- 4dp base spacing scale.
-- Common spacing: 8dp, 16dp, 20dp.
-- Screen horizontal padding: approximately 20dp.
-- Card radius: approximately 18dp.
-- Button radius: approximately 14dp.
-- Touch targets must remain comfortable and accessible.
-- Use subtle borders/elevation; avoid putting every element inside a card.
+- Modern, highly legible sans-serif.
+- Manrope or a similar geometric family may be evaluated for display headings.
+- Inter or platform sans-serif for body text.
+- Tabular numerals for durations, timestamps and storage.
+- Preserve Android font scaling; avoid fixed-height text that clips.
+
+### Surface, spacing and shape proposal
+
+- Gradient hero panels and feature cards.
+- Translucent surfaces with subtle light borders used selectively.
+- Avoid putting every element inside a glass card.
+- Keep settings and backup surfaces calmer than Home and Player.
+- Maintain comfortable touch targets, clear hierarchy and readable contrast.
+- Final spacing, radii and blur values remain subject to screen-level design review.
+
 
 ## 6. Navigation
 
@@ -215,3 +213,18 @@ Secondary screens (Recording Details, Full Player, Transcript, Compatibility) us
 - Empty/loading/error/offline/unsupported/unverified states.
 - Recording disclosure and AI upload consent screens.
 - Accessibility review.
+
+## 13. Approved visual reference translation
+
+The selected reference is a music/audio product interface. Translate its visual language into CallVault without importing its music-specific product semantics:
+- Album/artist artwork patterns become recording artwork or abstract audio identity visuals.
+- Music track metadata becomes recording title, source/provenance, date, duration and file information.
+- Music discovery/recommendations become recent recordings, categories and AI insights.
+- Player controls remain familiar, with recording-specific transcript, bookmark and source details.
+- Any waveform presented as measured data must be generated from the actual audio; decorative wave motifs must not be represented as real waveform analysis.
+
+Home and Player may be more expressive. Library, Backup and Settings should prioritize scanability and clarity while retaining the same color identity.
+
+## 14. Implementation boundary
+
+The existing Compose app currently implements the previous dark/violet theme. The selected direction is approved for future redesign, not yet implemented in code. The existing app functionality and technical architecture remain unchanged until each screen is redesigned, implemented and tested.
