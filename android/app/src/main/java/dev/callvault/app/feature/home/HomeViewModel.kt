@@ -10,11 +10,12 @@ import dev.callvault.app.data.repository.AudioImportManager
 import dev.callvault.app.data.repository.RecordingRepositoryImpl
 import dev.callvault.app.domain.model.Recording
 import dev.callvault.app.domain.repository.RecordingRepository
+import dev.callvault.app.domain.usecase.ImportRecordingUseCase
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,7 +28,7 @@ data class HomeUiState(
 
 class HomeViewModel(
     private val repository: RecordingRepository,
-    private val importManager: AudioImportManager
+    private val importRecordingUseCase: ImportRecordingUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -41,7 +42,7 @@ class HomeViewModel(
         }
     }
 
-    fun importAudio(uri: Uri) {
+    fun importAudio(sourceUri: String) {
         if (_uiState.value.isImporting) return
 
         viewModelScope.launch {
@@ -51,16 +52,11 @@ class HomeViewModel(
 
             val resultMessage = try {
                 val importedRecording = withContext(Dispatchers.IO) {
-                    val recording = importManager.importAudio(uri)
-                    try {
-                        repository.addRecording(recording)
-                        recording
-                    } catch (exception: Exception) {
-                        importManager.deleteImportedFile(recording.filePath)
-                        throw exception
-                    }
+                    importRecordingUseCase(sourceUri)
                 }
                 "\"" + importedRecording.title + "\" was added to your library."
+            } catch (cancellation: CancellationException) {
+                throw cancellation
             } catch (exception: Exception) {
                 exception.message ?: "Unable to import this audio file."
             }
@@ -90,6 +86,11 @@ class HomeViewModelFactory(
         val database = CallVaultDatabase.getDatabase(appContext)
         val repository = RecordingRepositoryImpl(database.recordingDao())
         val importManager = AudioImportManager(appContext)
-        return HomeViewModel(repository, importManager) as T
+        val importRecordingUseCase = ImportRecordingUseCase(
+            repository = repository,
+            importAudio = { sourceUri -> importManager.importAudio(Uri.parse(sourceUri)) },
+            deleteImportedFile = { relativePath -> importManager.deleteImportedFile(relativePath) }
+        )
+        return HomeViewModel(repository, importRecordingUseCase) as T
     }
 }

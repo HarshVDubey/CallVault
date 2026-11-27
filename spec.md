@@ -36,6 +36,13 @@ Android owns microphone/device integrations, file picking, local storage, playba
 
 Local library/playback must not require backend availability. Original audio is the durable source asset. Transcript, summary, embeddings and AI outputs are derived records and must never replace the original.
 
+### Implemented Home import boundary (27 November 2026)
+- `HomeScreen` owns Android Storage Access Framework (SAF) picker interaction and Compose UI presentation.
+- `HomeViewModel` owns `HomeUiState` (`recordings`, `isImporting`, `importResultMessage`) and Room Flow observation, invokes import off the main thread and rethrows `CancellationException`.
+- `ImportRecordingUseCase` coordinates audio import, `RecordingRepository` persistence and `NonCancellable` rollback file cleanup without masking the original persistence exception.
+- `RecordingRepository` remains the domain persistence boundary.
+- `HomeViewModelFactory` currently performs manual dependency construction (no DI framework is used; playback, dedicated Library management, AI processing, backend, backup and SIM/VoIP call-audio capture remain unimplemented).
+
 ## 4. Core domain model
 - **Recording:** id, title, sourceType, sourceLabel, createdAt, duration, mimeType, filePath, fileSize, status, checksum (optional), metadata.
 - **RecordingSource:** IMPORTED, MICROPHONE, VERIFIED_CALL_SOURCE, DEMO (development only).

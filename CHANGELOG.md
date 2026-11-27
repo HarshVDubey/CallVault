@@ -64,11 +64,12 @@
 - Preserved the existing Android/Kotlin, Spring Boot/Java, PostgreSQL and Lovable/React direction and existing verified implementation status.
 
 
-## 2026-11-27 — T-007 Home ViewModel refactor (implementation pending local verification)
+## 2026-11-27 — T-007 Home ViewModel and import-rollback verification
 
-- Added `HomeViewModel` and immutable `HomeUiState` to own Home recording observation, import progress/result state and import orchestration.
-- Moved Room/repository/import-manager construction out of `HomeScreen` into a small manual ViewModel factory; retained the SAF document picker in Compose.
-- Preserved IO dispatch and rollback of the copied app-private audio file if Room insertion fails.
-- Added the lifecycle ViewModel Compose 2.6.1 dependency.
-- No visual redesign or UI styling changes were made; the current UI remains a placeholder pending the separately planned Modern Colorful redesign.
-- T-007 remains unchecked until local Gradle build and emulator import regression are completed; no build/test result is claimed.
+- Extracted `ImportRecordingUseCase` to coordinate audio import, `RecordingRepository` persistence and `NonCancellable` file rollback on persistence failure while attaching cleanup failures as suppressed exceptions so the original persistence error is preserved.
+- Updated `HomeViewModel` (`HomeUiState`) to own recording observation, import execution and UI state via `ImportRecordingUseCase` (decoupled from concrete `AudioImportManager`) and to rethrow `CancellationException`.
+- Retained Android SAF picker ownership and presentation in `HomeScreen`; `HomeViewModelFactory` constructs dependencies manually.
+- Added the Lifecycle ViewModel Compose and KTX 2.6.1 dependencies.
+- Added four JVM unit tests in `ImportRecordingUseCaseTest`; `:app:testDebugUnitTest` passed (`BUILD SUCCESSFUL`, 5 total tests: 4 in `ImportRecordingUseCaseTest`, 1 in `ExampleUnitTest`; 0 failures, 0 errors).
+- `:app:assembleDebug` completed (`BUILD SUCCESSFUL`); APK installed and launched on `emulator-5554` (Medium Phone API 37.0), with user-confirmed valid MP3 import, persistence after force-stop/relaunch and unsupported audio rejection without crash.
+- Limitations unchanged: OnePlus 10T / Android 15 physical-device validation is outstanding; playback and dedicated Library management are not implemented; no SIM-call or third-party VoIP audio capture capability is claimed; no UI redesign was performed; Phase 1 remains in progress.

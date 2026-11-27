@@ -54,7 +54,7 @@ Android-first, with a strict feasibility gate for call-audio capture. Build the 
 - Unit/instrumentation test baseline exists.
 - Documentation reflects actual code and test status.
 
-**Current status (26 November 2026): IN PROGRESS.** Project generated; builds and launches on API 37 emulator. CV Design System 1.0, Home screen and five-destination navigation shell are implemented and visually verified by user screenshots. Room recording entity/DAO/database, mapper and repository are implemented; user reported successful Gradle builds after these changes. The non-Home tabs remain placeholders. Automated test baseline and OnePlus physical-device validation remain outstanding.
+**Current status (27 November 2026): IN PROGRESS.** Project builds and launches on `emulator-5554` (Medium Phone API 37.0). CV Design System 1.0 (no UI redesign performed), Home screen and five-destination navigation shell are implemented (non-Home tabs remain placeholders). Room recording entity/DAO/database, mapper and repository are implemented. T-007 is complete: `HomeViewModel` (`HomeUiState`), `ImportRecordingUseCase` and manual `HomeViewModelFactory` own state, Flow observation, import orchestration and `NonCancellable` rollback cleanup, while `HomeScreen` retains SAF picker launch and presentation. Verified via `:app:testDebugUnitTest` (5 tests passed: 4 in `ImportRecordingUseCaseTest`, 1 in `ExampleUnitTest`; 0 failures, 0 errors), `:app:assembleDebug`, and user-confirmed `emulator-5554` (API 37.0) regression (APK install/launch, valid MP3 import, persistence after force-stop/relaunch and unsupported-format rejection without crash). Instrumentation test baseline, playback, dedicated Library management and OnePlus 10T / Android 15 physical-device validation remain outstanding; no SIM-call or third-party VoIP capture capability is claimed.
 
 **Phase 1 progress breakdown**
 - [x] Kotlin/Compose starter project builds and launches on API 37 emulator.
@@ -65,7 +65,9 @@ Android-first, with a strict feasibility gate for call-audio capture. Build the 
 - [x] Implement initial Home screen and five-destination Compose navigation shell.
 - [ ] Replace temporary text-glyph navigation icons with consistent Material icons and refine selected/unselected styling.
 - [x] Establish Room recording entity, DAO, database, mapper and repository foundation.
-- [ ] Add unit/instrumentation test baseline.
+- [x] Refactor Home import into ViewModel and `ImportRecordingUseCase` boundaries (`T-007`), verified by `:app:testDebugUnitTest` (5 tests passed), `:app:assembleDebug` and `emulator-5554` (API 37.0) regression.
+- [x] Add initial JVM unit-test coverage for T-007 (5 tests passing).
+- [ ] Establish broader unit/instrumentation test baseline.
 - [ ] Verify build and UI on OnePlus 10T / Android 15.
 
 A screenshot-based visual check is not a substitute for automated tests or physical-device validation.

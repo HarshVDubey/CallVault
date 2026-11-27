@@ -46,7 +46,7 @@ fun HomeScreen(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri ->
         if (uri != null) {
-            viewModel.importAudio(uri)
+            viewModel.importAudio(uri.toString())
         }
     }
 
