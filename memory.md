@@ -262,3 +262,8 @@ See `phases.md` for exit criteria.
 **Governance clarification:** prd.md remains the product/release-scope baseline; requirement-spec.md adds research traceability and acceptance detail; memory.md records explicit user decisions and verified project facts; spec.md defines technical boundaries; phases.md controls sequencing and exit gates; task.md tracks execution evidence. If a conflict appears, preserve explicit user decisions and verified facts, document the resolution here, and do not silently infer a capability.
 
 **Evidence:** Compared the current prd.md, requirement-spec.md, spec.md, phases.md, task.md and this project memory on 27 November 2026. No application code was changed for T-001.
+
+
+## 14. Recording compatibility matrix — 27 November 2026
+
+T-002 completed: added docs/feasibility/recording-compatibility-matrix.md. The matrix records the API 37 emulator MP3 import as Verified for import only, not recording or playback. SIM, third-party VoIP, microphone capture and OEM/system recording-file paths remain Unverified or not implemented as explicitly scoped. OnePlus 10T / Android 15 remains physically untested. No call-audio capability is claimed. The matrix defines the evidence required before any source status can be changed.
