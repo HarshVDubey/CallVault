@@ -267,3 +267,8 @@ See `phases.md` for exit criteria.
 ## 14. Recording compatibility matrix — 27 November 2026
 
 T-002 completed: added docs/feasibility/recording-compatibility-matrix.md. The matrix records the API 37 emulator MP3 import as Verified for import only, not recording or playback. SIM, third-party VoIP, microphone capture and OEM/system recording-file paths remain Unverified or not implemented as explicitly scoped. OnePlus 10T / Android 15 remains physically untested. No call-audio capability is claimed. The matrix defines the evidence required before any source status can be changed.
+
+
+## 15. Android and Google Play policy review — 27 November 2026
+
+T-003 and T-004 completed. Official Android and Google Play documentation was reviewed and recorded in docs/feasibility/android-play-policy-review.md. Key decisions: ordinary Play-distributed CallVault will not attempt SIM-call internal audio capture through public third-party-app APIs; Accessibility-based remote call recording is prohibited by Google Play, and privileged pre-installed capture is unavailable to this app. Third-party VoIP capture remains source-specific and Unverified because Android playback capture is conditional on source-app audio usage and capture policy. A user-started microphone recorder may be evaluated separately with RECORD_AUDIO, microphone foreground-service requirements, visible controls and policy review; it is not call-audio capture. Continue SAF import without broad all-files access. The compatibility matrix now separates these statuses. This is an engineering/policy screening, not jurisdiction-specific legal advice or a Play approval guarantee.
