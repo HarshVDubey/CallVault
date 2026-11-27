@@ -42,6 +42,14 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsState()
     val recordings = uiState.recordings
 
+    val audioPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri != null) {
+            viewModel.importAudio(uri)
+        }
+    }
+
     var showCompatibilityInfo by remember {
         mutableStateOf(false)
     }
@@ -224,7 +232,7 @@ fun HomeScreen(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        resultMessage = null
+                        viewModel.dismissImportResult()
                     }
                 ) {
                     Text("Got it")
