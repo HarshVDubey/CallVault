@@ -5,7 +5,7 @@
 **Traceability:** CV-001…CV-016 refer to `requirement-spec.md`.
 
 ## Phase 0 — Documentation, feasibility and policy
-- [ ] T-001 Review and reconcile product requirements against existing PRD and memory. (P0)
+- [x] T-001 Review and reconcile product requirements against existing PRD and memory. (P0) — reviewed 27 Nov 2026; reconciliation recorded in memory.md §13.
 - [ ] T-002 Create device/source compatibility test matrix. (P0, CV-016)
 - [ ] T-003 Review current Android and Google Play requirements for each proposed capture path. (P0, CV-005/CV-016)
 - [ ] T-004 Record tested, unsupported and unverified capture sources separately. (P0, CV-002/CV-016)
