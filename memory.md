@@ -272,3 +272,8 @@ T-002 completed: added docs/feasibility/recording-compatibility-matrix.md. The m
 ## 15. Android and Google Play policy review — 27 November 2026
 
 T-003 and T-004 completed. Official Android and Google Play documentation was reviewed and recorded in docs/feasibility/android-play-policy-review.md. Key decisions: ordinary Play-distributed CallVault will not attempt SIM-call internal audio capture through public third-party-app APIs; Accessibility-based remote call recording is prohibited by Google Play, and privileged pre-installed capture is unavailable to this app. Third-party VoIP capture remains source-specific and Unverified because Android playback capture is conditional on source-app audio usage and capture policy. A user-started microphone recorder may be evaluated separately with RECORD_AUDIO, microphone foreground-service requirements, visible controls and policy review; it is not call-audio capture. Continue SAF import without broad all-files access. The compatibility matrix now separates these statuses. This is an engineering/policy screening, not jurisdiction-specific legal advice or a Play approval guarantee.
+
+
+## 16. Privacy and consent data-flow baseline — 27 November 2026
+
+T-005 completed: added docs/feasibility/privacy-consent-data-flows.md. It defines proposed point-of-use disclosures and separate local-import, proposed microphone-recording, future AI-processing and future encrypted-backup flows. It explicitly distinguishes microphone capture from internal call audio and leaves provider, region, retention, cost, legal-market and key-recovery facts as release blockers until decided. The document is a proposed UX/data-flow baseline, not evidence that these features are implemented.
