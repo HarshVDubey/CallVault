@@ -23,88 +23,27 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import dev.callvault.app.core.designsystem.components.CVCard
 import dev.callvault.app.core.designsystem.components.CVPrimaryButton
 import dev.callvault.app.core.designsystem.components.CVSecondaryButton
-import dev.callvault.app.data.local.database.CallVaultDatabase
-import dev.callvault.app.data.repository.AudioImportManager
-import dev.callvault.app.data.repository.RecordingRepositoryImpl
 import dev.callvault.app.domain.model.Recording
 import dev.callvault.app.ui.theme.CVPrimary
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current.applicationContext
-    val coroutineScope = rememberCoroutineScope()
-
-    val repository = remember(context) {
-        RecordingRepositoryImpl(
-            CallVaultDatabase.getDatabase(context).recordingDao()
-        )
-    }
-
-    val importManager = remember(context) {
-        AudioImportManager(context)
-    }
-
-    val recordings by repository
-        .observeRecordings()
-        .collectAsState(initial = emptyList())
+    val context = androidx.compose.ui.platform.LocalContext.current.applicationContext
+    val factory = remember(context) { HomeViewModelFactory(context) }
+    val viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = factory)
+    val uiState by viewModel.uiState.collectAsState()
+    val recordings = uiState.recordings
 
     var showCompatibilityInfo by remember {
         mutableStateOf(false)
-    }
-
-    var isImporting by remember {
-        mutableStateOf(false)
-    }
-
-    var resultMessage by remember {
-        mutableStateOf<String?>(null)
-    }
-
-    val audioPicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument()
-    ) { uri ->
-        if (uri != null) {
-            coroutineScope.launch {
-                isImporting = true
-
-                try {
-                    val importedRecording = withContext(Dispatchers.IO) {
-                        val recording = importManager.importAudio(uri)
-
-                        try {
-                            repository.addRecording(recording)
-                            recording
-                        } catch (exception: Exception) {
-                            importManager.deleteImportedFile(
-                                recording.filePath
-                            )
-                            throw exception
-                        }
-                    }
-
-                    resultMessage =
-                        "\"${importedRecording.title}\" was added to your library."
-                } catch (exception: Exception) {
-                    resultMessage = exception.message
-                        ?: "Unable to import this audio file."
-                } finally {
-                    isImporting = false
-                }
-            }
-        }
     }
 
     val totalDuration = recordings.sumOf {
@@ -182,7 +121,7 @@ fun HomeScreen(
                 style = MaterialTheme.typography.titleLarge
             )
 
-            if (isImporting) {
+            if (uiState.isImporting) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -271,16 +210,16 @@ fun HomeScreen(
     }
 
     // Import result dialog
-    if (resultMessage != null) {
+    if (uiState.importResultMessage != null) {
         AlertDialog(
             onDismissRequest = {
-                resultMessage = null
+                viewModel.dismissImportResult()
             },
             title = {
                 Text("Audio import")
             },
             text = {
-                Text(resultMessage!!)
+                Text(uiState.importResultMessage!!)
             },
             confirmButton = {
                 TextButton(
