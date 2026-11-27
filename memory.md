@@ -277,3 +277,8 @@ T-003 and T-004 completed. Official Android and Google Play documentation was re
 ## 16. Privacy and consent data-flow baseline — 27 November 2026
 
 T-005 completed: added docs/feasibility/privacy-consent-data-flows.md. It defines proposed point-of-use disclosures and separate local-import, proposed microphone-recording, future AI-processing and future encrypted-backup flows. It explicitly distinguishes microphone capture from internal call audio and leaves provider, region, retention, cost, legal-market and key-recovery facts as release blockers until decided. The document is a proposed UX/data-flow baseline, not evidence that these features are implemented.
+
+
+## 17. Repository source availability blocker — 27 November 2026
+
+While beginning T-006, the current GitHub main root listing was inspected. It contains the documentation files and docs/ directory but no android/ directory, Gradle wrapper, settings/build scripts or version catalog. Therefore the Android toolchain values recorded earlier in memory.md and trd.md remain user-reported historical observations, not independently auditable from the current repository state. T-006 remains unchecked/blocked until the Android project source is pushed to main or supplied for inspection. Do not make code or dependency changes based only on the historical version table.
