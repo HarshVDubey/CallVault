@@ -244,3 +244,21 @@ See `phases.md` for exit criteria.
 **Important unchanged constraints:** no universal SIM/VoIP recording promise; call-state detection is not audio access; no Accessibility misuse, hidden capture, root-only workaround, privileged-permission assumption or sideloaded helper dependency. Supported capture claims require a repeatable device/OS/source test and current policy review.
 
 **Status:** Documentation baseline committed to GitHub on 27 November 2026. No new feature implementation is implied.
+
+
+## 13. Requirements reconciliation — 27 November 2026
+
+**Task:** T-001 — Review and reconcile product requirements against the existing PRD and project memory.
+
+**Outcome: no material product-scope conflict found.** The 27 November requirement-spec.md refines and makes testable the existing product direction; it does not replace the PRD or override the user's recorded decisions.
+
+- The PRD's Android-first, local-first, privacy-first hybrid product remains authoritative for release scope and product intent.
+- The user's preference for both cellular SIM and internet/VoIP recording, and for manual and automatic modes, remains a preference subject to technical feasibility, consent, law and current platform/store policy. It is not a delivery promise.
+- CV-001–CV-006 add measurable P0 integrity, state, local-ownership, export, transparency and interruption requirements. These are consistent with the PRD's import, library, playback, privacy and reliability requirements.
+- CV-007–CV-015 refine the previously planned AI, transcript, bookmark, summary, Q&A, entitlement and backup capabilities. They remain future scope, not implemented features.
+- CV-016 formalizes the existing rule that call integrations are supported only for repeatably tested and policy-reviewed device/OS/source combinations.
+- Existing verified implementation facts in this file remain unchanged. The research baseline does not upgrade any feature's implementation status.
+
+**Governance clarification:** prd.md remains the product/release-scope baseline; requirement-spec.md adds research traceability and acceptance detail; memory.md records explicit user decisions and verified project facts; spec.md defines technical boundaries; phases.md controls sequencing and exit gates; task.md tracks execution evidence. If a conflict appears, preserve explicit user decisions and verified facts, document the resolution here, and do not silently infer a capability.
+
+**Evidence:** Compared the current prd.md, requirement-spec.md, spec.md, phases.md, task.md and this project memory on 27 November 2026. No application code was changed for T-001.
