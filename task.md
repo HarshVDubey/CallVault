@@ -9,7 +9,7 @@
 - [x] T-002 Create device/source compatibility test matrix. (P0, CV-016) — baseline matrix added at docs/feasibility/recording-compatibility-matrix.md; all call-capture rows remain Unverified.
 - [x] T-003 Review current Android and Google Play requirements for each proposed capture path. (P0, CV-005/CV-016) — official-source review recorded in docs/feasibility/android-play-policy-review.md.
 - [x] T-004 Record tested, unsupported and unverified capture sources separately. (P0, CV-002/CV-016) — statuses updated in docs/feasibility/recording-compatibility-matrix.md.
-- [ ] T-005 Define privacy disclosures, consent and upload data-flow diagrams. (P0, CV-005)
+- [x] T-005 Define privacy disclosures, consent and upload data-flow diagrams. (P0, CV-005) — proposed copy and local/microphone/AI/backup flows documented in docs/feasibility/privacy-consent-data-flows.md.
 **Exit:** no planned feature depends on hidden capture, Accessibility misuse, root, sideloaded helper or unsupported privileged access.
 
 ## Phase 1 — Android foundation and reliable local media
