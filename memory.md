@@ -282,3 +282,7 @@ T-005 completed: added docs/feasibility/privacy-consent-data-flows.md. It define
 ## 17. Repository source availability blocker — 27 November 2026
 
 While beginning T-006, the current GitHub main root listing was inspected. It contains the documentation files and docs/ directory but no android/ directory, Gradle wrapper, settings/build scripts or version catalog. Therefore the Android toolchain values recorded earlier in memory.md and trd.md remain user-reported historical observations, not independently auditable from the current repository state. T-006 remains unchecked/blocked until the Android project source is pushed to main or supplied for inspection. Do not make code or dependency changes based only on the historical version table.
+
+## 18. Android build configuration audit — 27 November 2026
+
+T-006 completed as a static repository audit. Checked-in values: Gradle 9.6.0; AGP 9.5.3; Kotlin Compose plugin 2.2.10; KSP 2.2.10-2.0.2; Compose BOM 2026.02.01; Room 2.8.5; compile/target SDK 37; min SDK 26; Java source/target 11; Gradle daemon JVM toolchain 25; single :app module. Noted duplicate Material3 dependency aliases, temporary android.disallowKotlinSourceSets=false workaround, and older AndroidX core/activity/lifecycle pins for later controlled cleanup. No Gradle build was executed remotely; build/test status remains unverified by this audit. See docs/engineering/android-build-configuration-audit.md.
