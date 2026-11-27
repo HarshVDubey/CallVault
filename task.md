@@ -13,7 +13,7 @@
 **Exit:** no planned feature depends on hidden capture, Accessibility misuse, root, sideloaded helper or unsupported privileged access.
 
 ## Phase 1 — Android foundation and reliable local media
-- [ ] T-006 Audit current Gradle/Kotlin/AGP configuration and document observed versions. **Blocked:** the current GitHub main tree has no android/ source directory or Gradle files; sync the Android project before this audit.
+- [x] T-006 Audit current Gradle/Kotlin/AGP configuration and document observed versions. — static source audit recorded in docs/engineering/android-build-configuration-audit.md; Gradle build execution remains unverified.
 - [ ] T-007 Refactor composable-owned repository/database work into ViewModel/use-case boundaries.
 - [ ] T-008 Define recording/import domain states and provenance. (P0, CV-002)
 - [ ] T-009 Add safe temporary-file and atomic finalization strategy. (P0, CV-001)
