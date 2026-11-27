@@ -245,3 +245,25 @@ Calendar estimates are intentionally not assigned until feasibility and provider
 - Security and privacy implications reviewed.
 - Documentation updated.
 - No unsupported capability represented as complete.
+
+## Research-informed product baseline — 27 November 2026
+
+The product positioning is **hybrid, with Capture, Manage and Understand equally central**. Delivery sequencing still follows technical dependencies: durable capture/import and local audio ownership precede transcription and advanced AI.
+
+The research-informed requirements are maintained in `requirement-spec.md`; the architecture and technical boundaries are in `spec.md`; the task-level implementation backlog is in `task.md`.
+
+### Updated phase alignment
+- **Phase 0:** competitor evidence, recording-source feasibility, Android/Play policy and privacy review.
+- **Phase 1:** reliable audio lifecycle, explicit state, finalization and recoverable interruption.
+- **Phase 2:** local library, playback, organization and export.
+- **Phase 3:** only permitted, repeatably tested recording-source integrations.
+- **Phase 4:** durable transcription jobs, editing and transcript search.
+- **Phase 5:** summaries, bookmarks and conversation Q&A.
+- **Phase 6:** backend, client-side encrypted backup and restore.
+- **Phase 7:** synchronized companion web client.
+- **Phase 8:** hardening, physical-device validation and Play release.
+
+### Research-derived P0 gates
+Capture integrity; truthful recording state; local original-audio ownership; basic export/portability; permission and processing transparency; and interruption recovery. See CV-001–CV-006 in `requirement-spec.md`.
+
+All existing phase exit gates remain mandatory. The research backlog does not mark any implementation task complete.
