@@ -10,7 +10,7 @@ Android-first, with a strict feasibility gate for call-audio capture. Build the 
 
 ## Phase 0 — Discovery, feasibility and compliance
 
-<escape>**Current status (27 November 2026): COMPLETE.** T-001–T-005 are documented in task.md. Deliverables: requirements reconciliation in memory.md; device/source matrix and Android/Play policy review under docs/feasibility/; privacy disclosures and data-flow diagrams under docs/feasibility/. The exit gate is met for the current product plan: prohibited Accessibility/root/hidden/privileged-workaround paths are excluded, SIM-call internal capture is Unsupported for the ordinary Play-app model, third-party VoIP remains source-specific and Unverified, and microphone capture is only a separate proposed feature.</escape>
+**Current status (27 November 2026): COMPLETE.** T-001–T-005 are documented in task.md. Deliverables: requirements reconciliation in memory.md; device/source matrix and Android/Play policy review under docs/feasibility/; privacy disclosures and data-flow diagrams under docs/feasibility/. The exit gate is met for the current product plan: prohibited Accessibility/root/hidden/privileged-workaround paths are excluded, SIM-call internal capture is Unsupported for the ordinary Play-app model, third-party VoIP remains source-specific and Unverified, and microphone capture is only a separate proposed feature.
 
 **Objectives**
 - Review current Android audio capture APIs and restrictions.
