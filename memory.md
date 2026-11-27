@@ -1,7 +1,7 @@
 # CallVault — Project Memory and Decision Log
 
 **Purpose:** Durable handoff file for ChatGPT, coding assistants and contributors.  
-**Last updated:** 26 November 2026  
+**Last updated:** 27 November 2026  
 **Memory version:** 1.3
 
 ## 1. Project identity
@@ -279,10 +279,15 @@ T-003 and T-004 completed. Official Android and Google Play documentation was re
 T-005 completed: added docs/feasibility/privacy-consent-data-flows.md. It defines proposed point-of-use disclosures and separate local-import, proposed microphone-recording, future AI-processing and future encrypted-backup flows. It explicitly distinguishes microphone capture from internal call audio and leaves provider, region, retention, cost, legal-market and key-recovery facts as release blockers until decided. The document is a proposed UX/data-flow baseline, not evidence that these features are implemented.
 
 
-## 17. Repository source availability blocker — 27 November 2026
+## 17. Repository source availability — resolved 27 November 2026
 
-While beginning T-006, the current GitHub main root listing was inspected. It contains the documentation files and docs/ directory but no android/ directory, Gradle wrapper, settings/build scripts or version catalog. Therefore the Android toolchain values recorded earlier in memory.md and trd.md remain user-reported historical observations, not independently auditable from the current repository state. T-006 remains unchecked/blocked until the Android project source is pushed to main or supplied for inspection. Do not make code or dependency changes based only on the historical version table.
+The Android project is now present on GitHub main under `android/`, including the Gradle wrapper, settings/build scripts, version catalog, manifest, Kotlin source and test source directories. The earlier missing-source blocker is resolved. Historical toolchain values were checked against the repository in T-006; see `docs/engineering/android-build-configuration-audit.md`.
 
 ## 18. Android build configuration audit — 27 November 2026
 
 T-006 completed as a static repository audit. Checked-in values: Gradle 9.6.0; AGP 9.5.3; Kotlin Compose plugin 2.2.10; KSP 2.2.10-2.0.2; Compose BOM 2026.02.01; Room 2.8.5; compile/target SDK 37; min SDK 26; Java source/target 11; Gradle daemon JVM toolchain 25; single :app module. Noted duplicate Material3 dependency aliases, temporary android.disallowKotlinSourceSets=false workaround, and older AndroidX core/activity/lifecycle pins for later controlled cleanup. No Gradle build was executed remotely; build/test status remains unverified by this audit. See docs/engineering/android-build-configuration-audit.md.
+
+
+## 19. T-007 Home ViewModel refactor — 27 November 2026
+
+Implemented on GitHub main: added `android/app/src/main/java/dev/callvault/app/feature/home/HomeViewModel.kt` with `HomeUiState`, `HomeViewModel` and a small manual `HomeViewModelFactory`. The ViewModel observes the repository Flow, performs SAF-selected audio import on `Dispatchers.IO`, exposes import progress/result state, persists through the existing repository and deletes the copied app-private file if Room insertion fails. `HomeScreen` no longer constructs the database/repository/import manager or owns import coroutine/state; it keeps the Android document picker and visual presentation. Added lifecycle ViewModel Compose 2.6.1 dependency alias and app dependency. No UI redesign, domain/use-case layer expansion, DI framework, recording capability, or other feature was introduced. T-007 remains unchecked pending local Gradle build, emulator SAF import success/failure regression and user confirmation. No build or test was executed through the GitHub source connection.
