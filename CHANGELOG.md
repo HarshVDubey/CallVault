@@ -62,3 +62,13 @@
 - Updated `README.md` document index and `memory.md` decision log.
 - Incorporated six user-provided competitor PDFs and the Competitor Intelligence Matrix. Reviewer allegations remain unverified reports; no new implementation is claimed.
 - Preserved the existing Android/Kotlin, Spring Boot/Java, PostgreSQL and Lovable/React direction and existing verified implementation status.
+
+
+## 2026-11-27 — T-007 Home ViewModel refactor (implementation pending local verification)
+
+- Added `HomeViewModel` and immutable `HomeUiState` to own Home recording observation, import progress/result state and import orchestration.
+- Moved Room/repository/import-manager construction out of `HomeScreen` into a small manual ViewModel factory; retained the SAF document picker in Compose.
+- Preserved IO dispatch and rollback of the copied app-private audio file if Room insertion fails.
+- Added the lifecycle ViewModel Compose 2.6.1 dependency.
+- No visual redesign or UI styling changes were made; the current UI remains a placeholder pending the separately planned Modern Colorful redesign.
+- T-007 remains unchecked until local Gradle build and emulator import regression are completed; no build/test result is claimed.
