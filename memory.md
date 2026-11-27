@@ -228,3 +228,19 @@ See `phases.md` for exit criteria.
 **Status boundary:** The current Android implementation still uses the earlier dark/violet theme. The new visual direction is approved for design and documentation, not yet implemented in Kotlin/Compose. Existing architecture, import flow and recording feasibility constraints are unchanged.
 
 **Affected documents:** README, ui-ux-design-brief, docs/design/design-system, docs/design/screen-specifications, docs/design/component-library, docs/design/interaction-patterns, phases and CHANGELOG.
+
+## 12. Research-informed baseline — 27 November 2026
+
+**Product positioning:** Hybrid, with Capture, Manage and Understand equally central. Implementation order remains dependency-driven; dependable local audio and ownership precede advanced AI.
+
+**Research inputs:** Six user-provided competitor PDFs and `CallVault_Competitor_Intelligence_Matrix.xlsx`: 45 evidence-register entries (43 individual review samples, one store-generated summary and one policy observation), 20 feature observations and 16 research-proposed backlog items. Competitors: Cube ACR, Easy Voice Recorder, 1Transcribe, Notta and Otter.
+
+**Evidence handling:** Reviews are user reports, not reproduced defects. Historical reports may describe older versions. A feature not shown in a screenshot is not established as absent. Priority labels are product judgments, not statistically measured market frequencies.
+
+**New planning documents:** `requirement-spec.md`, `spec.md`, `phases.md` and `task.md`. These supplement rather than erase the existing PRD, architecture and TRD. The research baseline does not change verified implementation status.
+
+**Research-derived P0:** capture integrity; accurate recording state and stop behavior; local original-audio ownership; basic export/portability; permission/processing transparency; interruption recovery.
+
+**Important unchanged constraints:** no universal SIM/VoIP recording promise; call-state detection is not audio access; no Accessibility misuse, hidden capture, root-only workaround, privileged-permission assumption or sideloaded helper dependency. Supported capture claims require a repeatable device/OS/source test and current policy review.
+
+**Status:** Documentation baseline committed to GitHub on 27 November 2026. No new feature implementation is implied.
