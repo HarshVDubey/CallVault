@@ -52,3 +52,13 @@
 - Clarified that Home and Player may be more expressive while Library, Backup and Settings should remain calmer and information-focused.
 - Existing Android Compose implementation still uses the earlier dark/violet theme; no UI redesign or code implementation is claimed by this documentation change.
 - Technical architecture, recording feasibility constraints and implemented import/persistence status remain unchanged.
+
+## 2026-11-27 — Competitor research baseline 1.0
+
+- Added `requirement-spec.md` with hybrid Capture/Manage/Understand positioning and research-informed functional/non-functional requirements.
+- Added `spec.md` covering the Android-first hybrid architecture, domain model, audio lifecycle, AI job lifecycle and privacy boundaries.
+- Added `task.md` with phased engineering tasks and traceability to CV-001–CV-016.
+- Updated `phases.md` with research-aligned delivery sequencing and P0 exit gates.
+- Updated `README.md` document index and `memory.md` decision log.
+- Incorporated six user-provided competitor PDFs and the Competitor Intelligence Matrix. Reviewer allegations remain unverified reports; no new implementation is claimed.
+- Preserved the existing Android/Kotlin, Spring Boot/Java, PostgreSQL and Lovable/React direction and existing verified implementation status.
