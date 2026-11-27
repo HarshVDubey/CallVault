@@ -6,14 +6,14 @@
 
 ## Phase 0 — Documentation, feasibility and policy
 - [x] T-001 Review and reconcile product requirements against existing PRD and memory. (P0) — reviewed 27 Nov 2026; reconciliation recorded in memory.md §13.
-- [x] T-002 Create device/source compatibility test matrix. (P0, CV-016) — baseline matrix added at docs/feasibility/recording-compatibility-matrix.md; all call-capture rows remain Unverified.
+- [x] T-002 Create device/source compatibility test matrix. (P0, CV-016) — baseline matrix added at docs/feasibility/recording-compatibility-matrix.md; SIM-call internal capture is Unsupported for the ordinary Play-app model; third-party VoIP remains Unverified.
 - [x] T-003 Review current Android and Google Play requirements for each proposed capture path. (P0, CV-005/CV-016) — official-source review recorded in docs/feasibility/android-play-policy-review.md.
 - [x] T-004 Record tested, unsupported and unverified capture sources separately. (P0, CV-002/CV-016) — statuses updated in docs/feasibility/recording-compatibility-matrix.md.
 - [x] T-005 Define privacy disclosures, consent and upload data-flow diagrams. (P0, CV-005) — proposed copy and local/microphone/AI/backup flows documented in docs/feasibility/privacy-consent-data-flows.md.
 **Exit:** no planned feature depends on hidden capture, Accessibility misuse, root, sideloaded helper or unsupported privileged access.
 
 ## Phase 1 — Android foundation and reliable local media
-- [ ] T-006 Audit current Gradle/Kotlin/AGP configuration and document observed versions.
+- [ ] T-006 Audit current Gradle/Kotlin/AGP configuration and document observed versions. **Blocked:** the current GitHub main tree has no android/ source directory or Gradle files; sync the Android project before this audit.
 - [ ] T-007 Refactor composable-owned repository/database work into ViewModel/use-case boundaries.
 - [ ] T-008 Define recording/import domain states and provenance. (P0, CV-002)
 - [ ] T-009 Add safe temporary-file and atomic finalization strategy. (P0, CV-001)
