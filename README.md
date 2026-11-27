@@ -126,3 +126,18 @@ See `memory.md` and `phases.md` for evidence and outstanding acceptance checks.
 The user-approved target direction is **Modern Colorful**: electric blue/indigo/violet/magenta gradients, selective glassmorphism, expressive audio visuals and an immersive player. Home and Player may be visually expressive; Library, Backup and Settings should use calmer, more functional surfaces. This replaces the earlier dark/violet-only visual direction.
 
 This is a design decision only. The current Compose implementation still uses the earlier theme and has not yet been visually redesigned. See `ui-ux-design-brief.md` and `docs/design/` for target specifications. Do not treat reference screenshots or proposed tokens as implemented functionality.
+
+## Research-informed product baseline — 27 November 2026
+
+The product positioning is **hybrid: Capture, Manage and Understand are equally central**. Delivery is dependency-ordered; reliable local audio and ownership precede advanced AI.
+
+| Document | Purpose |
+|---|---|
+| [requirement-spec.md](requirement-spec.md) | Research-informed product requirements, priorities and acceptance/release gates |
+| [spec.md](spec.md) | Product/technical architecture, domain model, audio and AI lifecycles, privacy boundaries |
+| [phases.md](phases.md) | Delivery phases and exit criteria |
+| [task.md](task.md) | Engineering backlog with task IDs, priorities and evidence traceability |
+
+Research basis: six user-provided competitor PDFs and the CallVault Competitor Intelligence Matrix (45 evidence-register entries, 20 feature observations, 16 research-proposed backlog items). Reviewer reports are treated as claims, not independently reproduced defects; screenshots only establish what was visible in the captured workflow.
+
+The new documents supplement the existing `prd.md`, `architecture.md`, `trd.md`, `appflow.md` and `memory.md`. Where details overlap, preserve existing verified implementation facts and explicit user-approved decisions; resolve conflicts in `memory.md` before implementation.
