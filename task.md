@@ -7,8 +7,8 @@
 ## Phase 0 — Documentation, feasibility and policy
 - [x] T-001 Review and reconcile product requirements against existing PRD and memory. (P0) — reviewed 27 Nov 2026; reconciliation recorded in memory.md §13.
 - [x] T-002 Create device/source compatibility test matrix. (P0, CV-016) — baseline matrix added at docs/feasibility/recording-compatibility-matrix.md; all call-capture rows remain Unverified.
-- [ ] T-003 Review current Android and Google Play requirements for each proposed capture path. (P0, CV-005/CV-016)
-- [ ] T-004 Record tested, unsupported and unverified capture sources separately. (P0, CV-002/CV-016)
+- [x] T-003 Review current Android and Google Play requirements for each proposed capture path. (P0, CV-005/CV-016) — official-source review recorded in docs/feasibility/android-play-policy-review.md.
+- [x] T-004 Record tested, unsupported and unverified capture sources separately. (P0, CV-002/CV-016) — statuses updated in docs/feasibility/recording-compatibility-matrix.md.
 - [ ] T-005 Define privacy disclosures, consent and upload data-flow diagrams. (P0, CV-005)
 **Exit:** no planned feature depends on hidden capture, Accessibility misuse, root, sideloaded helper or unsupported privileged access.
 
