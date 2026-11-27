@@ -60,7 +60,7 @@ class HomeViewModel(
                         throw exception
                     }
                 }
-                "\"\u0024{importedRecording.title}\" was added to your library."
+                "\"" + importedRecording.title + "\" was added to your library."
             } catch (exception: Exception) {
                 exception.message ?: "Unable to import this audio file."
             }
