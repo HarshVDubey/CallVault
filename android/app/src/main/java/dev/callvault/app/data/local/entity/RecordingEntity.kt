@@ -1,6 +1,6 @@
-
 package dev.callvault.app.data.local.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -28,6 +28,14 @@ data class RecordingEntity(
 
     val sourceType: String,
 
-    val importedAt: Long
-)
+    @ColumnInfo(defaultValue = "'Imported audio'")
+    val sourceLabel: String = "Imported audio",
 
+    @ColumnInfo(defaultValue = "'SAVED'")
+    val status: String = "SAVED",
+
+    val importedAt: Long,
+
+    @ColumnInfo(defaultValue = "NULL")
+    val checksum: String? = null
+)

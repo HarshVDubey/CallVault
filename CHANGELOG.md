@@ -73,3 +73,13 @@
 - Added four JVM unit tests in `ImportRecordingUseCaseTest`; `:app:testDebugUnitTest` passed (`BUILD SUCCESSFUL`, 5 total tests: 4 in `ImportRecordingUseCaseTest`, 1 in `ExampleUnitTest`; 0 failures, 0 errors).
 - `:app:assembleDebug` completed (`BUILD SUCCESSFUL`); APK installed and launched on `emulator-5554` (Medium Phone API 37.0), with user-confirmed valid MP3 import, persistence after force-stop/relaunch and unsupported audio rejection without crash.
 - Limitations unchanged: OnePlus 10T / Android 15 physical-device validation is outstanding; playback and dedicated Library management are not implemented; no SIM-call or third-party VoIP audio capture capability is claimed; no UI redesign was performed; Phase 1 remains in progress.
+
+## 2026-11-28 — T-008 Domain states, provenance and Room v2 migration
+
+- Added `CaptureStatus` (`IDLE` session-only, `RECORDING`, `PAUSED`, `INTERRUPTED`, `FINALIZING`, `SAVED`, `FAILED`) with separate SAF-import and capture transition validation and terminal stop/`SAVED`/`FAILED` enforcement.
+- Updated `RecordingSource` (`IMPORTED`, `MICROPHONE`, `VERIFIED_CALL_SOURCE`, `DEMO`, `LEGACY_UNVERIFIED`) and `Recording` (`createdAt` mapped to Room's preserved `importedAt` column, `sourceLabel`, `status`, optional `checksum`, and in-memory `rawSourceType`/`rawStatus` preservation).
+- Configured KSP `room.schemaLocation`, exported Room schemas `1.json` and `2.json` (`exportSchema = true`), bumped `CallVaultDatabase` to `version = 2` with `@ColumnInfo(defaultValue = ...)` alignment and `MIGRATION_1_2` (no destructive fallback), preserving `IMPORTED` rows and converting `CALL_RECORDING`/unknown sources to `LEGACY_UNVERIFIED` / `FAILED`.
+- Added fail-closed `RecordingMapper` and `RecordingRepositoryImpl` guards so unrecognized persisted `sourceType`/`status` values survive decode, title-update, and encode round trips without crashing `observeRecordings()` or being silently overwritten.
+- Updated `AudioImportManager` and `HomeScreen` to emit and display domain provenance without redesigning the UI.
+- Verified by `:app:testDebugUnitTest` (16 tests passed across `CaptureStatusTest`, `RecordingMapperTest`, `RecordingRepositoryImplTest`, `ImportRecordingUseCaseTest` and `ExampleUnitTest`; 0 failures, 0 errors), `:app:assembleDebug` (`BUILD SUCCESSFUL`), and `:app:connectedDebugAndroidTest` on `emulator-5554` (3 tests passed including `CallVaultDatabaseMigrationTest`).
+- Remaining limitations: `T-009` atomic temporary files, `T-010` full container/reopenability validation, playback, Library management, OnePlus 10T / Android 15 physical validation, and call-audio capture remain unimplemented.

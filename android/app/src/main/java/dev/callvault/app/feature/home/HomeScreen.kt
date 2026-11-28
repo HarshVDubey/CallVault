@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import dev.callvault.app.core.designsystem.components.CVCard
 import dev.callvault.app.core.designsystem.components.CVPrimaryButton
 import dev.callvault.app.core.designsystem.components.CVSecondaryButton
+import dev.callvault.app.domain.model.CaptureStatus
 import dev.callvault.app.domain.model.Recording
 import dev.callvault.app.ui.theme.CVPrimary
 
@@ -295,10 +296,22 @@ private fun RecordingItem(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
+            val provenanceText = if (recording.status == CaptureStatus.SAVED) {
+                recording.sourceLabel
+            } else {
+                val statusLabel = recording.status.name.lowercase()
+                    .replaceFirstChar { it.uppercase() }
+                "${recording.sourceLabel} • $statusLabel"
+            }
+
             Text(
-                text = "Imported audio",
+                text = provenanceText,
                 style = MaterialTheme.typography.labelSmall,
-                color = CVPrimary
+                color = if (recording.status == CaptureStatus.FAILED) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    CVPrimary
+                }
             )
         }
     }

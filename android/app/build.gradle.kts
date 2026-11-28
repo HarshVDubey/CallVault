@@ -37,6 +37,10 @@ android {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
     // Room Database
     implementation(libs.androidx.room.runtime)

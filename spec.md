@@ -45,14 +45,19 @@ Local library/playback must not require backend availability. Original audio is 
 
 ## 4. Core domain model
 - **Recording:** id, title, sourceType, sourceLabel, createdAt, duration, mimeType, filePath, fileSize, status, checksum (optional), metadata.
-- **RecordingSource:** IMPORTED, MICROPHONE, VERIFIED_CALL_SOURCE, DEMO (development only).
-- **CaptureStatus:** IDLE, RECORDING, PAUSED, INTERRUPTED, FINALIZING, SAVED, FAILED.
+- **RecordingSource:** IMPORTED, MICROPHONE, VERIFIED_CALL_SOURCE, DEMO (development only), plus LEGACY_UNVERIFIED in Android domain code for migrated pre-v2 `CALL_RECORDING` or fail-closed unrecognized persisted source values.
+- **CaptureStatus:** IDLE (session-only, never persisted), RECORDING, PAUSED, INTERRUPTED, FINALIZING, SAVED, FAILED. Stop is terminal (`FINALIZING` cannot revert to `RECORDING`/`PAUSED`); `SAVED` and `FAILED` are terminal.
 - **Transcript:** id, recordingId, language, provider, status, text/segments, createdAt, updatedAt.
 - **TranscriptSegment:** start/end timestamps, text, speakerId (optional), confidence (optional).
 - **ProcessingJob:** id, recordingId, jobType, status, progress, attempt, idempotencyKey, errorCode, timestamps.
 - **Summary:** id, recordingId, transcriptId, generated sections, source references, model/provider, createdAt.
 - **Bookmark:** id, recordingId, timestamp, label, note.
 - **BackupRecord:** recordingId, object reference, encryption metadata, status, lastSyncedAt.
+
+### Implemented Android domain & Room v2 boundary (28 November 2026, T-008)
+- `Recording` uses `createdAt` mapped to Room's preserved `importedAt` SQLite column (no column rename or table rebuild) and carries optional in-memory `rawSourceType`/`rawStatus` fields so unrecognized future database values survive read/title-update round trips without overwriting SQLite or promoting unknown sources to `VERIFIED_CALL_SOURCE`.
+- `RecordingEntity` v2 adds `sourceLabel`, `status` and `checksum` with `@ColumnInfo(defaultValue = ...)` aligned with `CallVaultDatabase.MIGRATION_1_2`, with schemas `1.json` and `2.json` exported via KSP (`exportSchema = true`).
+- Unstructured `metadata` remains deferred until later tasks establish concrete fields; `T-009` (atomic temporary files) and `T-010` (full container/reopenability checks) remain unimplemented.
 
 ## 5. Audio lifecycle
 1. User chooses an explicitly supported source or imports a file.

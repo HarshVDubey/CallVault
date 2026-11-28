@@ -5,6 +5,7 @@ import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.OpenableColumns
+import dev.callvault.app.domain.model.CaptureStatus
 import dev.callvault.app.domain.model.Recording
 import dev.callvault.app.domain.model.RecordingSource
 import java.io.File
@@ -63,6 +64,10 @@ class AudioImportManager(
             }
 
             val duration = readDuration(destination)
+            val savedStatus = CaptureStatus.FINALIZING.transitionTo(
+                next = CaptureStatus.SAVED,
+                isImport = true
+            )
 
             return Recording(
                 id = id,
@@ -72,7 +77,10 @@ class AudioImportManager(
                 durationMillis = duration,
                 fileSizeBytes = destination.length(),
                 source = RecordingSource.IMPORTED,
-                importedAt = System.currentTimeMillis()
+                sourceLabel = "Imported audio",
+                status = savedStatus,
+                createdAt = System.currentTimeMillis(),
+                checksum = null
             )
         } catch (exception: Exception) {
             destination.delete()

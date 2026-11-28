@@ -1,5 +1,6 @@
 package dev.callvault.app
 
+import dev.callvault.app.domain.model.CaptureStatus
 import dev.callvault.app.domain.model.Recording
 import dev.callvault.app.domain.model.RecordingSource
 import dev.callvault.app.domain.repository.RecordingRepository
@@ -39,6 +40,9 @@ class ImportRecordingUseCaseTest {
 
         assertEquals("content://media/external/audio/123", importedUri)
         assertEquals(expectedRecording, result)
+        assertEquals(RecordingSource.IMPORTED, result.source)
+        assertEquals("Imported audio", result.sourceLabel)
+        assertEquals(CaptureStatus.SAVED, result.status)
         assertEquals(1, repository.addRecordingCalls)
         assertEquals(listOf(expectedRecording), repository.addedRecordings)
         assertTrue(deletedPaths.isEmpty())
@@ -139,7 +143,10 @@ class ImportRecordingUseCaseTest {
         durationMillis = 3000L,
         fileSizeBytes = 52224L,
         source = RecordingSource.IMPORTED,
-        importedAt = 1764240000000L
+        sourceLabel = "Imported audio",
+        status = CaptureStatus.SAVED,
+        createdAt = 1764240000000L,
+        checksum = null
     )
 
     private class FakeRecordingRepository(
